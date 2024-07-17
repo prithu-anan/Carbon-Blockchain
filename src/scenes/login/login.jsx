@@ -252,15 +252,17 @@ const setCommunityMemberInterface = () => {
     event.preventDefault();    
     if(isAuditorInterface){
         localStorage.setItem('auditorId', 'auditor');
-        dispatch(auditorActions.login());        
+        dispatch(auditorActions.login());  
+        navigate('/auditor/dashboard');      
     } else if(isMillInterface){
         localStorage.setItem('millId', 'mill');
         dispatch(millActions.login());
+        navigate('/investor/dashboard');
     } else if(isCommunityMemberInterface){
         localStorage.setItem('communityMemberId', 'communityMember');
         dispatch(communityMemberActions.login());
+        navigate('/dashboard')
     }
-    navigate('/auditor');
   };
 
   return (
