@@ -35,7 +35,7 @@ const Topbar = () => {
       dispatch(communityMemberActions.logout());
       localStorage.removeItem("communityMemberId");
     }
-    navigate("/login");
+    navigate("/");
   }
 
   return (

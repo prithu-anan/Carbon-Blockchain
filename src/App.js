@@ -71,7 +71,7 @@ function App() {
             overflowX: 'auto'
           }}
         >
-          {!(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Sidebar isSidebar={isSidebar} />}          
+          {(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Sidebar isSidebar={isSidebar} />}          
           <main 
             className="content"
             style={{
@@ -82,8 +82,8 @@ function App() {
           >
             {(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Topbar setIsSidebar={setIsSidebar} />}            
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Login />} />
+              {/* <Route path="/" element={<Dashboard />} /> */}
               <Route path="/team" element={<Team />} />
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/invoices" element={<Invoices />} />
