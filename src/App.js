@@ -71,7 +71,7 @@ function App() {
             overflowX: 'auto'
           }}
         >
-          {(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Sidebar isSidebar={isSidebar} />}          
+          {!(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Sidebar isSidebar={isSidebar} />}          
           <main 
             className="content"
             style={{
