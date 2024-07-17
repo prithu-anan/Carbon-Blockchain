@@ -1281,3 +1281,139 @@ export const mockGeographyData = [
     value: 171135,
   },
 ];
+
+export const mockDataAuditTrails = [
+  {
+    id: 1,
+    auditorID: 101,
+    auditorName: "Ned Stark",
+    email: "nedstark@gmail.com",
+    project: "Winterfell Energy Audit",
+    action: "Review",
+    description: "Reviewed energy consumption data.",
+    date: "03/12/2022",
+    time: "09:00 AM"
+  },
+  {
+    id: 2,
+    auditorID: 102,
+    auditorName: "Robert Baratheon",
+    email: "robertbaratheon@gmail.com",
+    project: "King's Landing Carbon Footprint",
+    action: "Inspection",
+    description: "Inspected carbon emission levels.",
+    date: "06/15/2021",
+    time: "11:30 AM"
+  },
+  {
+    id: 3,
+    auditorID: 103,
+    auditorName: "Tyrion Lannister",
+    email: "tyrionlannister@gmail.com",
+    project: "Lannisport Waste Management",
+    action: "Audit",
+    description: "Audited waste management protocols.",
+    date: "05/02/2022",
+    time: "02:00 PM"
+  },
+  {
+    id: 4,
+    auditorID: 104,
+    auditorName: "Arya Stark",
+    email: "aryastark@gmail.com",
+    project: "Braavos Energy Efficiency",
+    action: "Verification",
+    description: "Verified energy efficiency improvements.",
+    date: "03/21/2022",
+    time: "10:00 AM"
+  },
+  {
+    id: 5,
+    auditorID: 105,
+    auditorName: "Sansa Stark",
+    email: "sansastark@gmail.com",
+    project: "Winterfell Renewable Energy",
+    action: "Review",
+    description: "Reviewed renewable energy installations.",
+    date: "01/12/2021",
+    time: "03:00 PM"
+  },
+  {
+    id: 6,
+    auditorID: 106,
+    auditorName: "Jorah Mormont",
+    email: "jorahmormont@gmail.com",
+    project: "Dragonstone Carbon Audit",
+    action: "Inspection",
+    description: "Inspected carbon offset measures.",
+    date: "11/02/2022",
+    time: "08:30 AM"
+  },
+  {
+    id: 7,
+    auditorID: 107,
+    auditorName: "Brienne of Tarth",
+    email: "brienneoftarth@gmail.com",
+    project: "Tarth Sustainability Report",
+    action: "Audit",
+    description: "Audited sustainability practices.",
+    date: "02/11/2022",
+    time: "12:00 PM"
+  },
+  {
+    id: 8,
+    auditorID: 108,
+    auditorName: "Samwell Tarly",
+    email: "samwelltarly@gmail.com",
+    project: "Oldtown Energy Conservation",
+    action: "Verification",
+    description: "Verified energy conservation measures.",
+    date: "05/02/2021",
+    time: "04:00 PM"
+  },
+  {
+    id: 9,
+    auditorID: 101,
+    auditorName: "Ned Stark",
+    email: "nedstark@gmail.com",
+    project: "Winterfell Energy Audit",
+    action: "Review",
+    description: "Reviewed energy consumption data.",
+    date: "03/12/2022",
+    time: "09:00 AM"
+  },
+  {
+    id: 10,
+    auditorID: 102,
+    auditorName: "Robert Baratheon",
+    email: "robertbaratheon@gmail.com",
+    project: "King's Landing Carbon Footprint",
+    action: "Inspection",
+    description: "Inspected carbon emission levels.",
+    date: "06/15/2021",
+    time: "11:30 AM"
+  },
+  {
+    id: 11,
+    auditorID: 103,
+    auditorName: "Tyrion Lannister",
+    email: "tyrionlannister@gmail.com",
+    project: "Lannisport Waste Management",
+    action: "Audit",
+    description: "Audited waste management protocols.",
+    date: "05/02/2022",
+    time: "02:00 PM"
+  },
+  {
+    id: 12,
+    auditorID: 104,
+    auditorName: "Arya Stark",
+    email: "aryastark@gmail.com",
+    project: "Braavos Energy Efficiency",
+    action: "Verification",
+    description: "Verified energy efficiency improvements.",
+    date: "03/21/2022",
+    time: "10:00 AM"
+  },
+];
+

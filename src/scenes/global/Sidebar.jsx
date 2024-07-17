@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -16,6 +16,16 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import { useDispatch, useSelector } from "react-redux";
+import { auditorActions, communityMemberActions, millActions, sidebarActions } from "../../store";
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import NewspaperOutlinedIcon from '@mui/icons-material/NewspaperOutlined';
+import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
+import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
+import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
+// import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -41,6 +51,25 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
+  const dispatch = useDispatch();
+  const isAuditorLoggedIn = useSelector((state) => state.auditor.isLoggedIn);
+  const isMillLoggedIn = useSelector((state) => state.mill.isLoggedIn);
+  const isCommunityMemberLoggedIn = useSelector((state) => state.communityMember.isLoggedIn);
+  const isCollapsedSelected = useSelector((state) => state.sidebar.isCollapsed);
+  console.log("isAuditorLoggedIn", isAuditorLoggedIn);
+  console.log("isMillLoggedIn", isMillLoggedIn);
+  console.log("isCommunityMemberLoggedIn", isCommunityMemberLoggedIn);
+  useEffect(() => {
+    if (localStorage.getItem("auditorId")) {
+      dispatch(auditorActions.login());
+    } else if (localStorage.getItem("millId")) {
+      dispatch(millActions.login());
+    } else if (localStorage.getItem("communityMemberId")) {
+      dispatch(communityMemberActions.login());
+    }
+    dispatch(isCollapsedSelected ? sidebarActions.collapse() : sidebarActions.expand());
+  }, [dispatch]);
+
   return (
     <Box
       sx={{
@@ -59,13 +88,21 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
+        position: 'fixed',
+        top: 0,
+        bottom: 0,
+        width: '100px', /* Fixed width for the vertically fixed component */
+        zIndex: 1000
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            onClick={() => {
+              setIsCollapsed(!isCollapsed)
+              dispatch(isCollapsed ? sidebarActions.collapse() : sidebarActions.expand())
+            }}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
@@ -80,7 +117,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                  ADMIN
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -96,7 +133,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={`../../assets/user1.webp`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -107,16 +144,143 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  John Doe
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  {isAuditorLoggedIn && "Auditor"}
+                  {isMillLoggedIn && "Investor"}
+                  {isCommunityMemberLoggedIn && "Community Member"}
                 </Typography>
               </Box>
             </Box>
           )}
 
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          {
+            isAuditorLoggedIn && (
+              <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+                <Item
+                  title="My Projects"
+                  to="/auditor/dashboard"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Schedule"
+                  to="/auditor/schedule"
+                  icon={<EditCalendarOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Projects Feed"
+                  to="/auditor/projects"
+                  icon={<AccountTreeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Reports"
+                  to="/auditor/reports"
+                  icon={<ReceiptOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Audit Trails"
+                  to="/auditor/trails"
+                  icon={<FormatListBulletedOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </Box>
+            )
+          }
+          {
+            isMillLoggedIn && (
+              <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+                <Item
+                  title="Dashboard"
+                  to="/investor/dashboard"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="New Projects"
+                  to="/investor/opportunities"
+                  icon={<AccountTreeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Performance Metrics"
+                  to="/investor/metrics"
+                  icon={<QueryStatsOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Transaction History"
+                  to="/investor/history"
+                  icon={<HistoryOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Project Updates"
+                  to="/mill/projects"
+                  icon={<TipsAndUpdatesOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Live Market"
+                  to="/investor/market"
+                  icon={<BarChartOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Financial Reports"
+                  to="/investor/reports"
+                  icon={<ReceiptOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </Box>
+            )
+          }
+          {
+            isCommunityMemberLoggedIn && (
+              <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+                <Item
+                  title="Dashboard"
+                  to="/community-member"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Projects"
+                  to="/community-member/projects"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Reports"
+                  to="/community-member/reports"
+                  icon={<ReceiptOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </Box>
+            )
+          }
+          {
+            !isAuditorLoggedIn && !isMillLoggedIn && !isCommunityMemberLoggedIn && (
+              <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
               to="/"
@@ -219,6 +383,8 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
           </Box>
+            )
+          }
         </Menu>
       </ProSidebar>
     </Box>

@@ -40,16 +40,31 @@ const communityMemberSlice = createSlice({
         state.isLoggedIn = false;
       },
     },
-  });
+});
+
+const sidebarSlice = createSlice({
+  name: "sidebar",
+  initialState: { isCollapsed: false },
+  reducers: {
+    collapse(state) {
+      state.isCollapsed = true;
+    },
+    expand(state) {
+      state.isLoggedIn = false;
+    },
+  },
+});
 
 export const auditorActions = auditorSlice.actions;
 export const millActions = millSlice.actions;
 export const communityMemberActions = communityMemberSlice.actions;
+export const sidebarActions = sidebarSlice.actions;
 
 export const store = configureStore({
   reducer: {
     auditor: auditorSlice.reducer,
     mill: millSlice.reducer,
     communityMember: communityMemberSlice.reducer,
+    sidebar: sidebarSlice.reducer,
   },
 });
