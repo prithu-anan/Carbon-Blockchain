@@ -15,9 +15,8 @@ import BarChart from "../../../components/BarChart";
 import StatBox from "../../../components/StatBox";
 import ProgressCircle from "../../../components/ProgressCircle";
 import { PersonAdd } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 
-const InvestorHome = () => {
+const OpportunityDetails = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -25,7 +24,7 @@ const InvestorHome = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="INVESTOR DASHBOARD" subtitle="Details & Information on the investor" />
+        <Header title="PROJECT DETAILS" subtitle="Details & Information on the Overall Project" />
 
         <Box>
           <Button
@@ -171,7 +170,7 @@ const InvestorHome = () => {
         </Box>
         <Box
           gridColumn="span 4"
-          gridRow="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
         >
@@ -184,7 +183,7 @@ const InvestorHome = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              My Projects
+              Recent Transactions
             </Typography>
           </Box>
           {mockTransactions.map((transaction, i) => (
@@ -202,28 +201,20 @@ const InvestorHome = () => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  Project
+                  {transaction.txId}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  Company
+                  {transaction.user}
                 </Typography>
               </Box>
               <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Button 
-                variant="solid"
-                sx={{
-                    backgroundColor: colors.greenAccent[600],
-                    color: colors.grey[100],
-                    // fontSize: "14px",
-                    fontWeight: "bold",
-                    padding: "5px 10px",
-                    m: 1
-                  }}
-                LinkComponent={Link}
-                to="/investor/opportunities/details"
+              <Box
+                backgroundColor={colors.greenAccent[500]}
+                p="5px 10px"
+                borderRadius="4px"
               >
-                SEE DETAILS
-              </Button>
+                ${transaction.cost}
+              </Box>
             </Box>
           ))}
         </Box>
@@ -264,15 +255,15 @@ const InvestorHome = () => {
           <Typography
             variant="h5"
             fontWeight="600"
-            sx={{ marginBottom: "15px" }}
+            sx={{ padding: "30px 30px 0 30px" }}
           >
-            Geography Based Traffic
+            Pollution Quantity
           </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
+          <Box height="250px" mt="-20px">
+            <BarChart isDashboard={true} />
           </Box>
         </Box>
-        {/* <Box
+        <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -321,10 +312,10 @@ const InvestorHome = () => {
               </Box>
             </Box>
           ))}
-        </Box> */}
+        </Box>
       </Box>
     </Box>
   );
 };
 
-export default InvestorHome;
+export default OpportunityDetails;

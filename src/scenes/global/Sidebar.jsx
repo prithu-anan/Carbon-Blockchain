@@ -229,7 +229,7 @@ const Sidebar = () => {
                 />
                 <Item
                   title="Project Updates"
-                  to="/mill/projects"
+                  to="/investor/updates"
                   icon={<TipsAndUpdatesOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}

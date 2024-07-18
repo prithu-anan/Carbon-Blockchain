@@ -15,6 +15,7 @@ import BarChart from "../../../components/BarChart";
 import StatBox from "../../../components/StatBox";
 import ProgressCircle from "../../../components/ProgressCircle";
 import { PersonAdd } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const InvestmentDetails = () => {
   const theme = useTheme();
@@ -255,12 +256,12 @@ const InvestmentDetails = () => {
           <Typography
             variant="h5"
             fontWeight="600"
-            sx={{ marginBottom: "15px" }}
+            sx={{ padding: "30px 30px 0 30px" }}
           >
-            Geography Based Traffic
+            Sales Quantity
           </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
+          <Box height="250px" mt="-20px">
+            <BarChart isDashboard={true} />
           </Box>
         </Box>
         <Box
@@ -303,13 +304,21 @@ const InvestmentDetails = () => {
                 </Typography>
               </Box>
               <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
+              <Button 
+                variant="solid"
+                sx={{
+                    backgroundColor: colors.greenAccent[600],
+                    color: colors.grey[100],
+                    // fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "5px 10px",
+                    m: 1
+                  }}
+                // LinkComponent={Link}
+                // to="/investor/opportunities/details"
               >
-                See Details
-              </Box>
+                SEE DETAILS
+              </Button>
             </Box>
           ))}
         </Box>

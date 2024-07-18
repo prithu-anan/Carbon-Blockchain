@@ -24,7 +24,7 @@ const PerformanceMetrics = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="PROJECT DETAILS" subtitle="Details & Information on the Overall Project" />
+        <Header title="PERFORMANCE METRICS" subtitle="Details & Information on the Inested Projects" />
 
         <Box>
           <Button
