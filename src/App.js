@@ -28,10 +28,16 @@ import PerformanceMetrics from "./scenes/investor/performance";
 import Report from "./scenes/auditor/reports";
 import AuditorProjects from "./scenes/auditor/home";
 import AuditorProjectDetails from "./scenes/auditor/projects/details";
-import FinancialReport from "./scenes/investor/reports.jsx";
+import FinancialReport from "./scenes/investor/reports/index.jsx";
 import LiveMarket from "./scenes/investor/market/index.jsx";
 import History from "./scenes/investor/history/index.jsx";
 import InvestorHome from "./scenes/investor/dashboard/index.jsx";
+import DeveloperHome from "./scenes/developer/dashboard/index.jsx";
+import DeveloperPerformanceMetrics from "./scenes/developer/performance/index.jsx";
+import DeveloperHistory from "./scenes/developer/history/index.jsx";
+import InvestmentUpdates from "./scenes/investor/update/index.jsx";
+import DeveloperUpdates from "./scenes/developer/update/index.jsx";
+import DeveloperLiveMarket from "./scenes/developer/market/index.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -110,6 +116,16 @@ function App() {
               <Route path="/investor/history" element={<History />} />
               <Route path="/investor/market" element={<LiveMarket />} />
               <Route path="/investor/reports" element={<FinancialReport />} />
+              <Route path="/investor/updates" element={<InvestmentUpdates />} />
+
+              <Route path="/developer/dashboard" element={<DeveloperHome />} />
+              <Route path="/developer/opportunities" element={<Opportunities />} />
+              <Route path="/developer/opportunities/details" element={<InvestmentDetails />} />
+              <Route path="/developer/metrics" element={<DeveloperPerformanceMetrics />} />
+              <Route path="/developer/history" element={<DeveloperHistory />} />
+              <Route path="/developer/market" element={<DeveloperLiveMarket />} />
+              <Route path="/developer/reports" element={<FinancialReport />} />
+              <Route path="/developer/updates" element={<DeveloperUpdates />} />
 
             </Routes>
           </main>
