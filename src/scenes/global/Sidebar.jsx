@@ -17,7 +17,7 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import { useDispatch, useSelector } from "react-redux";
-import { auditorActions, communityMemberActions, millActions, sidebarActions } from "../../store";
+import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions, sidebarActions } from "../../store";
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import NewspaperOutlinedIcon from '@mui/icons-material/NewspaperOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
@@ -53,17 +53,21 @@ const Sidebar = () => {
 
   const dispatch = useDispatch();
   const isAuditorLoggedIn = useSelector((state) => state.auditor.isLoggedIn);
-  const isMillLoggedIn = useSelector((state) => state.mill.isLoggedIn);
+  const isInvestorLoggedIn = useSelector((state) => state.investor.isLoggedIn);
+  const isProjectDeveloperLoggedIn = useSelector((state) => state.projectDeveloper.isLoggedIn);
   const isCommunityMemberLoggedIn = useSelector((state) => state.communityMember.isLoggedIn);
   const isCollapsedSelected = useSelector((state) => state.sidebar.isCollapsed);
   console.log("isAuditorLoggedIn", isAuditorLoggedIn);
-  console.log("isMillLoggedIn", isMillLoggedIn);
+  console.log("isInvestorLoggedIn", isInvestorLoggedIn);
+  console.log("isProjectDeveloperLoggedIn", isProjectDeveloperLoggedIn);
   console.log("isCommunityMemberLoggedIn", isCommunityMemberLoggedIn);
   useEffect(() => {
     if (localStorage.getItem("auditorId")) {
       dispatch(auditorActions.login());
-    } else if (localStorage.getItem("millId")) {
-      dispatch(millActions.login());
+    } else if (localStorage.getItem("investorId")) {
+      dispatch(investorActions.login());
+    } else if (localStorage.getItem("projectDeveloperId")) {
+      dispatch(projectDeveloperActions.login());
     } else if (localStorage.getItem("communityMemberId")) {
       dispatch(communityMemberActions.login());
     }
@@ -148,7 +152,8 @@ const Sidebar = () => {
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {isAuditorLoggedIn && "Auditor"}
-                  {isMillLoggedIn && "Investor"}
+                  {isInvestorLoggedIn && "Investor"}
+                  {isProjectDeveloperLoggedIn && "Project Developer"}
                   {isCommunityMemberLoggedIn && "Community Member"}
                 </Typography>
               </Box>
@@ -197,7 +202,7 @@ const Sidebar = () => {
             )
           }
           {
-            isMillLoggedIn && (
+            isInvestorLoggedIn && (
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 <Item
                   title="Dashboard"
@@ -252,6 +257,61 @@ const Sidebar = () => {
             )
           }
           {
+            isProjectDeveloperLoggedIn && (
+              <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+                <Item
+                  title="Dashboard"
+                  to="/developer/dashboard"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="New Projects"
+                  to="/developer/opportunities"
+                  icon={<AccountTreeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Performance Metrics"
+                  to="/developer/metrics"
+                  icon={<QueryStatsOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Transaction History"
+                  to="/developer/history"
+                  icon={<HistoryOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Project Updates"
+                  to="/developer/updates"
+                  icon={<TipsAndUpdatesOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Live Market"
+                  to="/developer/market"
+                  icon={<BarChartOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Financial Reports"
+                  to="/developer/reports"
+                  icon={<ReceiptOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </Box>
+            )
+          }
+          {
             isCommunityMemberLoggedIn && (
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 <Item
@@ -279,7 +339,7 @@ const Sidebar = () => {
             )
           }
           {
-            !isAuditorLoggedIn && !isMillLoggedIn && !isCommunityMemberLoggedIn && (
+            !isAuditorLoggedIn && !isInvestorLoggedIn && !isProjectDeveloperLoggedIn && !isCommunityMemberLoggedIn && (
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"

@@ -11,7 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auditorActions, communityMemberActions, millActions } from "../../store";
+import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from "../../store";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -21,16 +21,20 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   const isAuditorLoggedIn = useSelector((state) => state.auditor.isLoggedIn);
-  const isMillLoggedIn = useSelector((state) => state.mill.isLoggedIn);
+  const isInvestorLoggedIn = useSelector((state) => state.investor.isLoggedIn);
+  const isProjectDeveloperLoggedIn = useSelector((state) => state.projectDeveloper.isLoggedIn);
   const isCommunityMemberLoggedIn = useSelector((state) => state.communityMember.isLoggedIn);
 
   const handleLogout = () => {
     if(isAuditorLoggedIn) {
       dispatch(auditorActions.logout());
       localStorage.removeItem("auditorId");
-    } else if(isMillLoggedIn) {
-      dispatch(millActions.logout());
-      localStorage.removeItem("millId");
+    } else if(isInvestorLoggedIn) {
+      dispatch(investorActions.logout());
+      localStorage.removeItem("investorId");
+    } else if(isProjectDeveloperLoggedIn) {
+      dispatch(projectDeveloperActions.logout());
+      localStorage.removeItem("projectDeveloperId");
     } else if(isCommunityMemberLoggedIn) {
       dispatch(communityMemberActions.logout());
       localStorage.removeItem("communityMemberId");

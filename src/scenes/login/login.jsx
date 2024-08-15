@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 import { useDispatch } from 'react-redux';
-import { auditorActions, communityMemberActions, millActions } from '../../store';
+import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from '../../store';
 
 // const theme = createTheme();
 
@@ -18,7 +18,7 @@ const Login = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isAuditorInterface, setIsAuditorInterface] = useState(true);
-  const [isMillInterface, setIsMillInterface] = useState(false);
+  const [isInvestorInterface, setIsInvestorInterface] = useState(false);
   const [isCommunityMemberInterface, setIsCommunityMemberInterface] = useState(false);
 
   const [walletId, setWalletId] = useState('');
@@ -37,8 +37,8 @@ const Login = () => {
   const [employmentVerification, setEmploymentVerification] = useState('');
   const [ethicsAndCodeOfConduct, setEthicsAndCodeOfConduct] = useState('');
 
-  const [millType, setMillType] = useState('');
-  const [millName, setMillName] = useState('');
+  const [investorType, setInvestorType] = useState('');
+  const [investorName, setInvestorName] = useState('');
   const [address, setAddress] = useState('');
   const [coordinates, setCoordinates] = useState('');
   const [permitsAndLicences, setPermitsAndLicences] = useState('');
@@ -50,13 +50,13 @@ const Login = () => {
   const [proofOfCompliance, setProofOfCompliance] = useState('');
   const [ownershipInformation, setOwnershipInformation] = useState('');
   const [projectRole, setProjectRole] = useState('');
-    const [isProjectDeveloper, setIsProjectDeveloper] = useState(false);
-    const [description, setDescription] = useState('');
-    const [sequestration, setSequestration] = useState('');
-    const [scope, setScope] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [monitoring, setMonitoring] = useState('');
+  const [isProjectDeveloper, setIsProjectDeveloper] = useState(false);
+  const [description, setDescription] = useState('');
+  const [sequestration, setSequestration] = useState('');
+  const [scope, setScope] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [monitoring, setMonitoring] = useState('');
 
 
   const [communityAffiliation, setCommunityAffiliation] = useState('');
@@ -73,19 +73,19 @@ const Login = () => {
 
   const setAuditorInterface = () => {
     setIsAuditorInterface(true);
-    setIsMillInterface(false);
+    setIsInvestorInterface(false);
     setIsCommunityMemberInterface(false);
 };
 
-const setMillInterface = () => {
+const setInvestorInterface = () => {
     setIsAuditorInterface(false);
-    setIsMillInterface(true);
+    setIsInvestorInterface(true);
     setIsCommunityMemberInterface(false);
 };
 
 const setCommunityMemberInterface = () => {
     setIsAuditorInterface(false);
-    setIsMillInterface(false);
+    setIsInvestorInterface(false);
     setIsCommunityMemberInterface(true);
 };
 
@@ -138,12 +138,12 @@ const setCommunityMemberInterface = () => {
     setPassword(event.target.value);
   };
 
-  const handleMillTypeChange = (event) => {
-    setMillType(event.target.value);
+  const handleInvestorTypeChange = (event) => {
+    setInvestorType(event.target.value);
   };
 
-  const handleMillNameChange = (event) => {
-    setMillName(event.target.value);
+  const handleInvestorNameChange = (event) => {
+    setInvestorName(event.target.value);
   };
 
   const handleProfessionalCertifications = (event) => {
@@ -254,10 +254,14 @@ const setCommunityMemberInterface = () => {
         localStorage.setItem('auditorId', 'auditor');
         dispatch(auditorActions.login());  
         navigate('/auditor/dashboard');      
-    } else if(isMillInterface){
-        localStorage.setItem('millId', 'mill');
-        dispatch(millActions.login());
+    } else if(isInvestorInterface && !isProjectDeveloper){
+        localStorage.setItem('investorId', 'investor');
+        dispatch(investorActions.login());
         navigate('/investor/dashboard');
+    } else if(isInvestorInterface && isProjectDeveloper){
+        localStorage.setItem('projectDeveloperId', 'projectDeveloper');
+        dispatch(projectDeveloperActions.login());
+        navigate('/developer/dashboard');
     } else if(isCommunityMemberInterface){
         localStorage.setItem('communityMemberId', 'communityMember');
         dispatch(communityMemberActions.login());
@@ -328,15 +332,33 @@ const setCommunityMemberInterface = () => {
                   sx={{color:colors.greenAccent[500]}}
                 />
                 <FormControlLabel
-                  control={<Checkbox checked={isMillInterface}
+                  control={<Checkbox checked={isInvestorInterface && !isProjectDeveloper}
                   sx={{
                     color: colors.greenAccent[500], // Change the color to red
                     '&.Mui-checked': { // Style the checked state
                     color: colors.greenAccent[500], // Change the color to green when checked
                     }
                     }}
-                 onChange={setMillInterface} />}
-                  label="Mill Login"
+                    onChange={()=>{setInvestorInterface();
+                                  setIsProjectDeveloper(false)}
+                              } 
+                    />}
+                  label="Investor Login"
+                  sx={{color:colors.greenAccent[500]}}
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={isInvestorInterface && isProjectDeveloper}
+                  sx={{
+                    color: colors.greenAccent[500], // Change the color to red
+                    '&.Mui-checked': { // Style the checked state
+                    color: colors.greenAccent[500], // Change the color to green when checked
+                    }
+                    }}
+                  onChange={()=>{setInvestorInterface();
+                                setIsProjectDeveloper(true)}
+                            } 
+                  />}
+                  label="Project Developer Login"
                   sx={{color:colors.greenAccent[500]}}
                 />
                 <FormControlLabel
@@ -397,8 +419,8 @@ const setCommunityMemberInterface = () => {
             />
             <FormControlLabel
               control={<Checkbox 
-                checked={isMillInterface} 
-                onChange={setMillInterface} 
+                checked={isInvestorInterface} 
+                onChange={setInvestorInterface} 
                 sx={{
                     color: colors.greenAccent[500], // Change the color to red
                     '&.Mui-checked': { // Style the checked state
@@ -406,7 +428,7 @@ const setCommunityMemberInterface = () => {
                     }
                     }}
                 />}
-              label="Mill Registration"
+              label="Investor Registration"
               sx={{color:colors.greenAccent[500]}}
             />
             <FormControlLabel
@@ -806,7 +828,7 @@ const setCommunityMemberInterface = () => {
                         sx={{color:colors.greenAccent[500]}}
                     />
                   </Grid>
-                  {/* Include mill registration fields */}
+                  {/* Include investor registration fields */}
                   <Grid item xs={12}>
                     <Button
                       type="submit"
@@ -832,11 +854,11 @@ const setCommunityMemberInterface = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel>Mill Type</InputLabel>
+                      <InputLabel>Investor Type</InputLabel>
                       <Select
-                        value={millType}
-                        onChange={handleMillTypeChange}
-                        label="Mill Type"
+                        value={investorType}
+                        onChange={handleInvestorTypeChange}
+                        label="Investor Type"
                         sx={{ bgcolor: 'background.paper'}}
                       >
                         <MenuItem value="Textile">Textile</MenuItem>
@@ -848,11 +870,11 @@ const setCommunityMemberInterface = () => {
                   <Grid item xs={12} sm={6}>
                       <TextField
                         required
-                        onChange={handleMillNameChange}
+                        onChange={handleInvestorNameChange}
                         fullWidth
                         variant="outlined"
-                        label="Mill Name"
-                        name="millName"
+                        label="Investor Name"
+                        name="investorName"
                         sx={{ bgcolor: 'background.paper'}}
                       />
                     </Grid>
@@ -862,7 +884,7 @@ const setCommunityMemberInterface = () => {
                         onChange={handleFirstNameChange}
                         fullWidth
                         variant="outlined"
-                        label="First Name of Mill Owner"
+                        label="First Name of Investor Owner"
                         name="ownerFirstName"
                         sx={{ bgcolor: 'background.paper'}}
                       />
@@ -873,7 +895,7 @@ const setCommunityMemberInterface = () => {
                         onChange={handleLastNameChange}
                         fullWidth
                         variant="outlined"
-                        label="Last Name of Mill Owner"
+                        label="Last Name of Investor Owner"
                         name="ownerLastName"
                         sx={{ bgcolor: 'background.paper'}}
                       />
@@ -1189,7 +1211,7 @@ const setCommunityMemberInterface = () => {
                         sx={{color:colors.greenAccent[500]}}
                     />
                   </Grid>
-                  {/* Include mill registration fields */}
+                  {/* Include investor registration fields */}
                   <Grid item xs={12}>
                     <Button
                       type="submit"

@@ -17,7 +17,7 @@ import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Login from "./scenes/login/login";
 import { useDispatch, useSelector } from "react-redux";
-import { auditorActions, communityMemberActions, millActions, sidebarActions } from "./store";
+import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions, sidebarActions } from "./store";
 import Projects from "./scenes/auditor/projects";
 import AuditTrails from "./scenes/auditor/trails";
 import Opportunities from "./scenes/investor/opportunities";
@@ -46,18 +46,22 @@ function App() {
 
   const dispatch = useDispatch();
   const isAuditorLoggedIn = useSelector((state) => state.auditor.isLoggedIn);
-  const isMillLoggedIn = useSelector((state) => state.mill.isLoggedIn);
+  const isInvestorLoggedIn = useSelector((state) => state.investor.isLoggedIn);
   const isCommunityMemberLoggedIn = useSelector((state) => state.communityMember.isLoggedIn);
+  const isProjectDeveloperLoggedIn = useSelector((state) => state.projectDeveloper.isLoggedIn);
   const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
   console.log("isAuditorLoggedIn", isAuditorLoggedIn);
-  console.log("isMillLoggedIn", isMillLoggedIn);
+  console.log("isInvestorLoggedIn", isInvestorLoggedIn);
   console.log("isCommunityMemberLoggedIn", isCommunityMemberLoggedIn);
+  console.log("isProjectDeveloperLoggedIn", isProjectDeveloperLoggedIn);
   
   useEffect(() => {
     if (localStorage.getItem("auditorId")) {
       dispatch(auditorActions.login());
-    } else if (localStorage.getItem("millId")) {
-      dispatch(millActions.login());
+    } else if (localStorage.getItem("InvestorId")) {
+      dispatch(investorActions.login());
+    } else if (localStorage.getItem("projectDeveloperId")) {
+      dispatch(projectDeveloperActions.login());
     } else if (localStorage.getItem("communityMemberId")) {
       dispatch(communityMemberActions.login());
     }
@@ -77,16 +81,16 @@ function App() {
             overflowX: 'auto'
           }}
         >
-          {(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Sidebar isSidebar={isSidebar} />}          
+          {(isAuditorLoggedIn || isInvestorLoggedIn || isProjectDeveloperLoggedIn || isCommunityMemberLoggedIn) && <Sidebar isSidebar={isSidebar} />}          
           <main 
             className="content"
             style={{
-              marginLeft: (isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) ? '270px' : '0px', /* Adjust these values based on your sidebar width */
+              marginLeft: (isAuditorLoggedIn || isInvestorLoggedIn || isProjectDeveloperLoggedIn || isCommunityMemberLoggedIn) ? '270px' : '0px', /* Adjust these values based on your sidebar width */
               flexGrow: 1,
               // whiteSpace: 'nowrap'
             }}
           >
-            {(isAuditorLoggedIn || isMillLoggedIn || isCommunityMemberLoggedIn) && <Topbar setIsSidebar={setIsSidebar} />}            
+            {(isAuditorLoggedIn || isInvestorLoggedIn || isProjectDeveloperLoggedIn || isCommunityMemberLoggedIn) && <Topbar setIsSidebar={setIsSidebar} />}            
             <Routes>
               <Route path="/" element={<Login />} />
               {/* <Route path="/" element={<Dashboard />} /> */}

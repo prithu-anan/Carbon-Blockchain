@@ -14,15 +14,29 @@ const auditorSlice = createSlice({
   },
 });
 
-const millSlice = createSlice({
-  name: "mill",
+const investorSlice = createSlice({
+  name: "investor",
   initialState: { isLoggedIn: false },
   reducers: {
     login(state) {
       state.isLoggedIn = true;
     },
     logout(state) {
-      localStorage.removeItem("millId");
+      localStorage.removeItem("investorId");
+      state.isLoggedIn = false;
+    },
+  },
+});
+
+const projectDeveloperSlice = createSlice({
+  name: "projectDeveloper",
+  initialState: { isLoggedIn: false },
+  reducers: {
+    login(state) {
+      state.isLoggedIn = true;
+    },
+    logout(state) {
+      localStorage.removeItem("projectDeveloperId");
       state.isLoggedIn = false;
     },
   },
@@ -56,14 +70,16 @@ const sidebarSlice = createSlice({
 });
 
 export const auditorActions = auditorSlice.actions;
-export const millActions = millSlice.actions;
+export const investorActions = investorSlice.actions;
+export const projectDeveloperActions = projectDeveloperSlice.actions;
 export const communityMemberActions = communityMemberSlice.actions;
 export const sidebarActions = sidebarSlice.actions;
 
 export const store = configureStore({
   reducer: {
     auditor: auditorSlice.reducer,
-    mill: millSlice.reducer,
+    investor: investorSlice.reducer,
+    projectDeveloper: projectDeveloperSlice.reducer,
     communityMember: communityMemberSlice.reducer,
     sidebar: sidebarSlice.reducer,
   },
