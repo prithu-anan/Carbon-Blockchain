@@ -267,9 +267,9 @@ const Sidebar = () => {
                   setSelected={setSelected}
                 />
                 <Item
-                  title="New Projects"
+                  title="Investors"
                   to="/developer/opportunities"
-                  icon={<AccountTreeOutlinedIcon />}
+                  icon={<PersonOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />

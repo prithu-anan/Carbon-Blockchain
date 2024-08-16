@@ -38,6 +38,8 @@ import DeveloperHistory from "./scenes/developer/history/index.jsx";
 import InvestmentUpdates from "./scenes/investor/update/index.jsx";
 import DeveloperUpdates from "./scenes/developer/update/index.jsx";
 import DeveloperLiveMarket from "./scenes/developer/market/index.jsx";
+import Investors from "./scenes/developer/opportunities/index.jsx";
+import Investor from "./scenes/developer/Investor/index.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -123,8 +125,8 @@ function App() {
               <Route path="/investor/updates" element={<InvestmentUpdates />} />
 
               <Route path="/developer/dashboard" element={<DeveloperHome />} />
-              <Route path="/developer/opportunities" element={<Opportunities />} />
-              <Route path="/developer/opportunities/details" element={<InvestmentDetails />} />
+              <Route path="/developer/opportunities" element={<Investors />} />
+              <Route path="/developer/opportunities/details" element={<Investor />} />
               <Route path="/developer/metrics" element={<DeveloperPerformanceMetrics />} />
               <Route path="/developer/history" element={<DeveloperHistory />} />
               <Route path="/developer/market" element={<DeveloperLiveMarket />} />
