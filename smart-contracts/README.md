@@ -1,13 +1,40 @@
-# Sample Hardhat Project
+# Hardhat Project Setup Guide
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+This guide will help you set up the Hardhat environment for our project. Follow the steps below to install the necessary dependencies and start working with Hardhat.
 
-Try running some of the following tasks:
+## Prerequisites
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
+Before getting started, ensure that you have the following installed on your machine:
+
+- **Node.js** (version 16.x or later)
+- **Yarn** (version 1.x or later)
+
+If you don't have Yarn installed, you can install it globally by running:
+
+```bash
+npm install -g yarn
+```
+## Install dependencies
+
+```bash
+yarn install
+```
+
+## Setup Environment variables
+
+```bash
+SEPOLIA_RPC_URL="https://eth-sepolia.g.alchemy.com/v2/gyfGaBjotyR770lY6atYSsb-ZwDyiS13"
+SEPOLIA_PRIVATE_KEY= "YOUR_PRIVATE_KEY"
+```
+
+## Compile the contracts
+
+```bash
+yarn hardhat compile
+```
+
+## Deploy the contract
+
+```bash
+yarn hardhat run ./ignition/modules/contract-name --network sepolia
 ```
