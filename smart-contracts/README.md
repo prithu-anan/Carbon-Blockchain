@@ -24,7 +24,7 @@ yarn install
 
 ```bash
 SEPOLIA_RPC_URL="https://eth-sepolia.g.alchemy.com/v2/gyfGaBjotyR770lY6atYSsb-ZwDyiS13"
-SEPOLIA_PRIVATE_KEY= "YOUR_PRIVATE_KEY"
+SEPOLIA_PRIVATE_KEY="YOUR_PRIVATE_KEY"
 ```
 
 ## Compile the contracts

@@ -30,3 +30,11 @@ smart-contracts/.env
 # backend node-modules
 
 backend/node_modules/
+
+# hardhat compiled files
+smart-contracts/cache/solidity-files-cache.json
+smart-contracts/artifacts/contracts/Lock.sol/Lock.json
+smart-contracts/artifacts/contracts/Lock.sol/Lock.dbg.json
+smart-contracts/artifacts/build-info/22662767f8b1a09e64d324318d70c2ac.json
+smart-contracts/artifacts/build-info/874639b7d56c4cc6c7d339adee6b2822.json
+smart-contracts/hardhat.config.js
