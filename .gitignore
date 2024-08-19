@@ -26,3 +26,7 @@ yarn-error.log*
 
 smart-contracts/node_modules/
 smart-contracts/.env
+
+# backend node-modules
+
+backend/node_modules/
