@@ -1,0 +1,66 @@
+
+CarbonOffset Smart Contract Integration Guide
+
+Function Overview
+
+1. Contract Initialization
+- Constructor: CarbonOffset(uint256 initialSupply, uint _tokenPrice)
+  - Initial Supply: Amount of CTK tokens to mint.
+  - Token Price: Price of 1 CTK in ETH.
+  - ETH Required: No.
+
+2. Minting CTK Tokens/ Alloting CTK tokens to any address
+- Function: mint(address to)
+  - To: Address to receive the minted CTK tokens.
+  - ETH Required: Yes (send ETH equivalent to the number of CTK tokens to mint).
+
+3. Developer Functions
+- Register Developer: registerDeveloper()
+  - Description: Registers the caller as a developer.
+  - ETH Required: No.
+
+- Create Project: createProject(uint projectId)
+  - Project ID: Unique identifier for the project.
+  - ETH Required: No.
+
+- Withdraw Funds: withdrawFunds(uint projectId)
+  - Project ID: Unique identifier of the project.
+  - Description: Withdraws CTK investments as ETH to the developer’s account.
+  - ETH Required: No.
+
+4. Investor Functions
+- Register Investor: registerInvestor()
+  - Description: Registers the caller as an investor.
+  - ETH Required: No.
+
+- Add Investor Document: addInvestorDocument(string memory ipfsHash)
+  - IPFS Hash: Hash of the document to store.
+  - ETH Required: No.
+
+- Invest in Project: investInProject(uint projectId, uint256 amount, uint256 duration)
+  - Project ID: Unique identifier of the project.
+  - Amount: CTK tokens to invest.
+  - Duration: Investment period in seconds.
+  - ETH Required: No (requires CTK tokens).
+
+5. Auditor Functions
+- Register Auditor: registerAuditor(uint8[] memory specializations)
+  - Specializations: Array of auditor’s specializations. //say 0 for environment 	specialist, 1 for policy specialist etc. 
+  - ETH Required: No.
+
+- Add Auditor Specialization: addAuditorSpecialization(uint8 specialization)
+  - Specialization: New specialization to add.
+  - ETH Required: No.
+
+- Upload Audit Record: uploadAuditRecord(uint projectId, uint8 specialization, string memory ipfsHash, bool isApproved)
+  - Project ID: Project being audited.
+  - Specialization: Related specialization.
+  - IPFS Hash: Hash of the audit document.
+  - Approval Status: True if the audit is approved.
+  - ETH Required: No.
+
+
+
+ETH Requirements Summary
+- Required: mint().
+- Not Required: All other functions.
