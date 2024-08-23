@@ -33,8 +33,14 @@ SEPOLIA_PRIVATE_KEY="YOUR_PRIVATE_KEY"
 yarn hardhat compile
 ```
 
-## Deploy the contract
+## Deploy the contract UPDATED
 
 ```bash
-yarn hardhat run ./ignition/modules/contract-name --network sepolia
+$env:CONTRACT_NAME="contract-to-be-deployed" ; yarn deploy
+```
+## If the contract has parameterized contructor you need to put the arguments in deploy.js file
+
+```bash
+const contract = await contractFactory.deploy(constructor-arguments);
+
 ```
