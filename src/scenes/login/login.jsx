@@ -248,24 +248,101 @@ const setCommunityMemberInterface = () => {
         }
     };
 
+    const [response, setResponse] = useState();
+
   const handleSubmit = (event) => {
     event.preventDefault();    
     if(isAuditorInterface){
+        setResponse({
+            user: 'auditor',
+            walletId: walletId,
+            role: role,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber,
+            organizationName: organizationName,
+            jobTitle: jobTitle,
+            professionalCertifications: professionalCertifications,
+            governmentIdentification: governmentIdentification,
+            employmentVerification: employmentVerification,
+            ethicsAndCodeOfConduct: ethicsAndCodeOfConduct,
+        })
+
+        console.log(response);
         localStorage.setItem('auditorId', 'auditor');
         dispatch(auditorActions.login());  
-        navigate('/auditor/dashboard');      
+        // navigate('/auditor/dashboard');      
     } else if(isInvestorInterface && !isProjectDeveloper){
+        setResponse({
+            user: 'investor',
+            walletId: walletId,
+            investorType: investorType,
+            investorName: investorName,
+            address: address,
+            coordinates: coordinates,
+            permitsAndLicences: permitsAndLicences,
+            eiaDocuments: eiaDocuments,
+            tokenWalletInformation: tokenWalletInformation,
+            healthAndSafetyPolicies: healthAndSafetyPolicies,
+            businessRegistrationDocuments: businessRegistrationDocuments,
+            financialStatements: financialStatements,
+            proofOfCompliance: proofOfCompliance,
+            ownershipInformation: ownershipInformation,
+            projectRole: projectRole,
+        })
+        
+        console.log(response);
         localStorage.setItem('investorId', 'investor');
         dispatch(investorActions.login());
-        navigate('/investor/dashboard');
+        // navigate('/investor/dashboard');
     } else if(isInvestorInterface && isProjectDeveloper){
+        setResponse({
+            user: 'projectDeveloper',
+            walletId: walletId,
+            investorType: investorType,
+            investorName: investorName,
+            address: address,
+            coordinates: coordinates,
+            permitsAndLicences: permitsAndLicences,
+            eiaDocuments: eiaDocuments,
+            tokenWalletInformation: tokenWalletInformation,
+            healthAndSafetyPolicies: healthAndSafetyPolicies,
+            businessRegistrationDocuments: businessRegistrationDocuments,
+            financialStatements: financialStatements,
+            proofOfCompliance: proofOfCompliance,
+            ownershipInformation: ownershipInformation,
+            projectRole: projectRole,
+            description: description,
+            sequestration: sequestration,
+            scope: scope,
+            startDate: startDate,
+            endDate: endDate,
+            monitoring: monitoring,
+        })
+        
+        console.log(response);
         localStorage.setItem('projectDeveloperId', 'projectDeveloper');
         dispatch(projectDeveloperActions.login());
-        navigate('/developer/dashboard');
+        // navigate('/developer/dashboard');
     } else if(isCommunityMemberInterface){
+        setResponse({
+            user: 'communityMember',
+            walletId: walletId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber,
+            address: address,
+            communityAffiliation: communityAffiliation,
+            interest: interest,
+            communicationMethod: communicationMethod,
+        })
+        
+        console.log(response);
         localStorage.setItem('communityMemberId', 'communityMember');
         dispatch(communityMemberActions.login());
-        navigate('/dashboard')
+        // navigate('/dashboard')
     }
   };
 
