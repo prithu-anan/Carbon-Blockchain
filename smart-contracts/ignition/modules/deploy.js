@@ -32,7 +32,7 @@ async function main() {
     "..",
     "..",
     "..",
-    "backend/abi",
+    "src/abi",
     `${contractName}.json`
   );
 
