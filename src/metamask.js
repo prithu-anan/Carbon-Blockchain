@@ -3,6 +3,9 @@
 // import MetaMask from './metamask.js';
 // const metamask = new MetaMask();
 // use await for the async functions
+// see Login.jsx for details
+
+import {ethers} from 'ethers' ;
 
 class Metamask {
 
