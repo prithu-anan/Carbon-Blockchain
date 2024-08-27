@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./models/database');
 const cors = require('cors');
 
+const developerRouter = require('./router/developerRouter') ;
+
 // Load environment variables
 dotenv.config(); 
 
@@ -16,9 +18,7 @@ app.use(express.json());
 app.use(cors()) ;
 
 // Sample Route
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
+app.use('/developer',developerRouter);
 
 // Import Routes
 // For example: const userRoutes = require('./routes/userRoutes');
