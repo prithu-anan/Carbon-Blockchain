@@ -16,7 +16,7 @@ async function main() {
 
   const contractFactory = await ethers.getContractFactory(contractName);
 
-  const contract = await contractFactory.deploy();  // constructor arguments
+  const contract = await contractFactory.deploy(1000,10);  // constructor arguments
 
   await contract.waitForDeployment();
 

@@ -4,6 +4,7 @@ const connectDB = require('./models/database');
 const cors = require('cors');
 
 const developerRouter = require('./router/developerRouter') ;
+const investorRouter = require('./router/investorRouter') ;
 
 // Load environment variables
 dotenv.config(); 
@@ -19,6 +20,7 @@ app.use(cors()) ;
 
 // Sample Route
 app.use('/developer',developerRouter);
+app.use('/investor',investorRouter) ;
 
 // Import Routes
 // For example: const userRoutes = require('./routes/userRoutes');

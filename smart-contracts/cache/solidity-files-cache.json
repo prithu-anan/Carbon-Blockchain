@@ -229,8 +229,8 @@
       ]
     },
     "E:\\Skills\\Blockchain\\Carbon-Blockchain\\smart-contracts\\contracts\\CarbonOffset.sol": {
-      "lastModificationDate": 1724396953765,
-      "contentHash": "72c482af511834c3b5e1e98b52776c84",
+      "lastModificationDate": 1724747977414,
+      "contentHash": "10d924ee4209befe0f3183f8112f89e5",
       "sourceName": "contracts/CarbonOffset.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -265,42 +265,6 @@
       ],
       "artifacts": [
         "CarbonOffset"
-      ]
-    },
-    "E:\\Skills\\Blockchain\\Carbon-Blockchain\\smart-contracts\\contracts\\Storage.sol": {
-      "lastModificationDate": 1719997180890,
-      "contentHash": "9e349fc2eb7e18bd483ba3394155529e",
-      "sourceName": "contracts/Storage.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.8.2 <0.9.0"
-      ],
-      "artifacts": [
-        "Storage"
       ]
     }
   }
