@@ -24,6 +24,5 @@ export const signin = async(formData) => {
         console.log(err);
     }
 
-    console.log(res.data.message) ;
     return res.data;
 };

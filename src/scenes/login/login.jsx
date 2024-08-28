@@ -7,7 +7,7 @@ import { tokens } from '../../theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from '../../store';
 import Metamask from '../../metamask';
-import { register } from '../../api-helpers';
+import { register, signin } from '../../api-helpers';
 import CarbonOffset from '../../carbonOffset';
 
 // const theme = createTheme();
@@ -270,6 +270,43 @@ const setCommunityMemberInterface = () => {
 
         // Now you can send the signature and account to the backend for verification
         // console.log('Signature:', signature);
+
+        const roleMapping = {
+          'Auditor': 'auditor',
+          'Investor': 'investor',
+          'Project Developer': 'developer',
+          'Community Member': 'communityMember',
+        };
+        
+        const loginRole = roleMapping[role] || '';
+
+        const res = await signin({ loginRole, account, message, signature });
+
+        if(res?.success) {
+            console.log('Login successful:', res);
+            switch(role) {
+              case 'Auditor':
+                // localStorage.setItem('auditorId', res?.data.id);
+                dispatch(auditorActions.login());
+                navigate('/auditor/dashboard');
+                break;
+              case 'Investor':
+                dispatch(investorActions.login());
+                navigate('/investor/dashboard');
+                break;
+              case 'Project Developer':
+                dispatch(projectDeveloperActions.login());
+                navigate('/developer/dashboard');
+                break;
+              case 'Community Member':
+                dispatch(communityMemberActions.login());
+                navigate('/dashboard');
+                break;
+              default:
+                break;
+            }
+        }        
+        
       } catch (error) {
         console.error('Login failed', error);
       }
@@ -287,30 +324,30 @@ const setCommunityMemberInterface = () => {
       }
     }, [loginTriggered]); 
 
-    useEffect(() => {
-      if (signature != null) {
-          switch (loginRole) {
-              case 'Auditor':
-                  dispatch(auditorActions.login());
-                  navigate('/auditor/dashboard');
-                  break;
-              case 'Investor':
-                  dispatch(investorActions.login());
-                  navigate('/investor/dashboard');
-                  break;
-              case 'Project Developer':
-                  dispatch(projectDeveloperActions.login());
-                  navigate('/developer/dashboard');
-                  break;
-              case 'Community Member':
-                  dispatch(communityMemberActions.login());
-                  navigate('/dashboard');
-                  break;
-              default:
-                  break;
-          }
-      }
-    }, [signature]);
+    // useEffect(() => {
+    //   if (signature != null) {
+    //       switch (loginRole) {
+    //           case 'Auditor':
+    //               dispatch(auditorActions.login());
+    //               navigate('/auditor/dashboard');
+    //               break;
+    //           case 'Investor':
+    //               dispatch(investorActions.login());
+    //               navigate('/investor/dashboard');
+    //               break;
+    //           case 'Project Developer':
+    //               dispatch(projectDeveloperActions.login());
+    //               navigate('/developer/dashboard');
+    //               break;
+    //           case 'Community Member':
+    //               dispatch(communityMemberActions.login());
+    //               navigate('/dashboard');
+    //               break;
+    //           default:
+    //               break;
+    //       }
+    //   }
+    // }, [signature]);
 
   const handleLogin = (event) => {
       event.preventDefault();
@@ -323,7 +360,8 @@ const setCommunityMemberInterface = () => {
     event.preventDefault();
 
     if (isLogin) {
-        setLoginRole(event.target.textContent);
+        const role = event.target.getAttribute('role');
+        setLoginRole(role);
         setLoginTriggered(!loginTriggered);
     } else if (isAuditorInterface) {
         setResponse({
@@ -409,6 +447,7 @@ const setCommunityMemberInterface = () => {
         
         else if (response?.user === 'investor') {
             const carbonOffset = new CarbonOffset();
+            await carbonOffset.initializeContract();
             const carbonRegister = await carbonOffset.registerInvestor(response);
             if (carbonRegister?.success) {
                 res = await register('investor', response);
@@ -419,6 +458,7 @@ const setCommunityMemberInterface = () => {
         
         else if (response?.user === 'projectDeveloper') {
             const carbonOffset = new CarbonOffset();
+            await carbonOffset.initializeContract();
             const carbonRegister = await carbonOffset.registerDeveloper();
             if (carbonRegister?.success) {
                 res = await register('developer', response);
@@ -472,8 +512,9 @@ const setCommunityMemberInterface = () => {
                     loginRoles.map((role, index) => (
                         <Button 
                             key={index}
-                            type='submit'
-                            // onClick={handleLogin}
+                            // type='submit'                            
+                            // role={role}
+                            onClick={handleLogin}
                             fullWidth
                             variant="contained"
                             sx={{
