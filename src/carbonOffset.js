@@ -57,6 +57,55 @@ class CarbonOffset {
       };
     }
   }
+
+  async registerInvestor(investor/*investor object*/){
+
+    try {
+        // Ensure the contract is initialized
+        if (!this.contract) {
+          throw new Error("Contract is not initialized.");
+        }
+  
+        // Call the smart contract's registerInvestor method
+        const transaction = await this.contract.registerInvestor();
+
+    //   permitsAndLicences": "",
+    // "eiaDocuments": "",
+    // "tokenWalletInformation": "",
+    // "healthAndSafetyPolicies": "",
+    // "businessRegistrationDocuments": "",
+    // "financialStatements": "",
+    // "proofOfCompliance": "",
+    // "ownershipInformation": "",
+
+        const documents = [investor.permitsAndLicences,investor.eiaDocuments,investor.tokenWalletInformation,investor.healthAndSafetyPolicies,investor.businessRegistrationDocuments,investor.financialStatements,investor.proofOfCompliance,investor.ownershipInformation] ;
+
+        let hash = '' ;
+
+        for (document in documents ) {
+
+            hash += document ;
+        }
+
+        await this.contract.addInvestorDocument(hash) ;
+  
+        // Wait for the transaction to be confirmed
+      //   await transaction.wait();
+  
+      console.log("Metamask says ,Transaction sent: "+transaction) ;
+  
+        return {
+          success: true,
+          message: 'Investor registered successfully',
+        };
+      } catch (error) {
+        console.error("Error in registerInvestor in CarbonOffset", error);
+        return {
+          success: false,
+          message: 'Failed to register Investor',
+        };
+      }
+  }
 }
 
 export default CarbonOffset;
