@@ -26,6 +26,38 @@ const investorSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  permitsAndLicences: {
+    type: String,
+    // required: true
+  },
+  eiaDocuments: {
+    type: String,
+    // required: true
+  },
+  tokenWalletInformation: {
+    type: String,
+    // required: true
+  },
+  healthAndSafetyPolicies: {
+    type: String,
+    // required: true
+  },
+  businessRegistrationDocuments: {
+    type: String,
+    // required: true
+  },
+  financialStatements: {
+    type: String,
+    // required: true
+  },
+  proofOfCompliance: {
+    type: String,
+    // required: true
+  },
+  ownershipInformation: {
+    type: String,
+    // required: true
+  },
   projectRole: {
     type: String,
     required: true
