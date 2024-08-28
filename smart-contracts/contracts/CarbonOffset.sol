@@ -29,7 +29,7 @@ contract CarbonOffset is Ownable, ERC20 {
 
     struct Developer {
         address developerAddress;
-        uint256[] projectIds; // Array of project IDs associated with the developer
+        string[] projectIds; // Array of project IDs associated with the developer
     }
 
     struct Investor {
@@ -55,21 +55,21 @@ contract CarbonOffset is Ownable, ERC20 {
     // Mappings
     mapping(address => Developer) public developers;
     mapping(address => Investor) public investors;
-    mapping(uint => Project) public projects;
+    mapping(string => Project) public projects;
     mapping(address => Auditor) public auditors;
-    mapping(uint => AuditRecord[]) public auditRecords; // projectId => audit records
+    mapping(string => AuditRecord[]) public auditRecords; // projectId => audit records
 
     // Events
     event DeveloperRegistered(address developer);
-    event ProjectCreated(uint projectId, address developer);
-    event DocumentAdded(uint projectId, address developer, string ipfsHash);
+    event ProjectCreated(string projectId, address developer);
+    event DocumentAdded(string projectId, address developer, string ipfsHash);
     event InvestorRegistered(address investor);
     event DocumentAdded(address investor, string ipfsHash);
     event AuditorRegistered(address auditor, uint8[] specializations);
     event SpecializationAdded(address auditor, uint8 specialization);
-    event InvestmentMade(uint projectId, address investor, uint256 amount, uint256 startTime, uint256 endTime);
-    event AuditPerformed(uint projectId, address auditor, string ipfsHash, bool isApproved);
-    event FundsWithdrawn(uint projectId, address developer, uint256 amount);
+    event InvestmentMade(string projectId, address investor, uint256 amount, uint256 startTime, uint256 endTime);
+    event AuditPerformed(string projectId, address auditor, string ipfsHash, bool isApproved);
+    event FundsWithdrawn(string projectId, address developer, uint256 amount);
 
     // Constructor with initial supply and exchange rate
     constructor(uint256 initialSupply, uint _tokenPrice) 
@@ -83,7 +83,7 @@ contract CarbonOffset is Ownable, ERC20 {
     // Mint new tokens
     function mint(address to) public payable onlyOwner {
         require(msg.value > 0, "No ETH sent");
-        uint amount = msg.value / tokenPrice;
+        uint amount = msg.value * tokenPrice;
         _mint(to, amount);
     }
 
@@ -94,14 +94,28 @@ contract CarbonOffset is Ownable, ERC20 {
         emit DeveloperRegistered(msg.sender);
     }
 
-    function createProject(uint projectId) public {
+    function createProject(string memory projectId) public {
         require(developers[msg.sender].developerAddress != address(0), "Developer not registered");
         projects[projectId].isActive = true;
         projects[projectId].lastAuditTime = block.timestamp;
         developers[msg.sender].projectIds.push(projectId); 
         emit ProjectCreated(projectId, msg.sender);
     }
+    function addProjectDocument(string memory projectId, string memory ipfsHash) external {
+        require(developers[msg.sender].developerAddress != address(0), "Developer not registered");
+        require(projects[projectId].isActive, "Project is not active");
 
+        projects[projectId].projectIpfsHashes.push(ipfsHash);
+        emit DocumentAdded(projectId, msg.sender, ipfsHash); // Emit an event to notify that a document has been added
+    }
+    function addProjectDocuments(string memory projectId, string[] memory ipfsHashes) external {
+        require(developers[msg.sender].developerAddress != address(0), "Developer not registered");
+        require(projects[projectId].isActive, "Project is not active");
+        for (uint i = 0; i < ipfsHashes.length; i++) {  
+            projects[projectId].projectIpfsHashes.push(ipfsHashes[i]); 
+            emit DocumentAdded(projectId, msg.sender, ipfsHashes[i]);  // Emit an event to notify that a document has been added to the project's documents array
+         }
+    }
     function registerInvestor() external {
         require(investors[msg.sender].investorAddress == address(0), "Investor already registered");
         investors[msg.sender].investorAddress = msg.sender;
@@ -111,10 +125,16 @@ contract CarbonOffset is Ownable, ERC20 {
 
     function addInvestorDocument(string memory ipfsHash) external {
         require(investors[msg.sender].investorAddress != address(0), "Investor not registered");
-        investors[msg.sender].documentsIpfsHashes.push(ipfsHash); // Add the new document to the investor's documents array
+        investors[msg.sender].documentsIpfsHashes.push(ipfsHash); 
         emit DocumentAdded(msg.sender, ipfsHash); 
     }
-
+    function addInvestorDocuments(string[] memory ipfsHashes) external {
+        require(investors[msg.sender].investorAddress != address(0), "Investor not registered");
+        for (uint i = 0; i < ipfsHashes.length; i++) {
+            investors[msg.sender].documentsIpfsHashes.push(ipfsHashes[i]); 
+            emit DocumentAdded(msg.sender, ipfsHashes[i]);  // Emit an event to notify that a document has been added to the investor's documents array
+         }
+    }
     function registerAuditor(uint8[] memory specializations) external {
         require(auditors[msg.sender].auditorAddress == address(0), "Auditor already registered");
 
@@ -133,7 +153,7 @@ contract CarbonOffset is Ownable, ERC20 {
         emit SpecializationAdded(msg.sender, specialization);
     }
 
-    function investInProject(uint projectId, uint256 amount, uint256 duration) external {
+    function investInProject(string memory projectId, uint256 amount, uint256 duration) external {
         require(investors[msg.sender].investorAddress != address(0), "Investor not registered");
         require(projects[projectId].isActive, "Project is not active");
 
@@ -147,7 +167,7 @@ contract CarbonOffset is Ownable, ERC20 {
         emit InvestmentMade(projectId, msg.sender, amount, projects[projectId].investments[msg.sender].startTime, projects[projectId].investments[msg.sender].endTime);
     }
 
-    function uploadAuditRecord(uint projectId, uint8 specialization, string memory ipfsHash, bool isApproved) external {
+    function uploadAuditRecord(string memory projectId, uint8 specialization, string memory ipfsHash, bool isApproved) external {
         Auditor storage auditor = auditors[msg.sender];
         require(auditor.auditorAddress == msg.sender && auditor.specializations[specialization], "Not authorized to audit");
 
@@ -166,12 +186,12 @@ contract CarbonOffset is Ownable, ERC20 {
     }
 
     // Withdraw funds by the developer
-    function withdrawFunds(uint projectId) external {
+    function withdrawFunds(string memory projectId) external {
         Project storage project = projects[projectId];
         require(developers[msg.sender].developerAddress != address(0), "Developer not registered");
         bool isOwner = false;
         for (uint i = 0; i < developers[msg.sender].projectIds.length; i++) {
-            if (developers[msg.sender].projectIds[i] == projectId) {
+            if (keccak256(abi.encodePacked(developers[msg.sender].projectIds[i])) == keccak256(abi.encodePacked(projectId))) {
                 isOwner = true;
                 break;
             }
@@ -185,7 +205,7 @@ contract CarbonOffset is Ownable, ERC20 {
         require(totalInvestment > 0, "No funds available for withdrawal");
 
         
-        uint256 ethAmount = totalInvestment * tokenPrice;
+        uint256 ethAmount = totalInvestment / tokenPrice;
         
        
         require(address(this).balance >= ethAmount, "Insufficient ETH in contract");
