@@ -1,4 +1,5 @@
 const Investor = require('../models/investor');
+const ethers = require('ethers') ;
 
 // Function to register a new investor
 const registerInvestor = async (req, res) => {
