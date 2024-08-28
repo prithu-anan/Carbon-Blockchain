@@ -50,7 +50,7 @@ const Login = () => {
   const [financialStatements, setFinancialStatements] = useState('');
   const [proofOfCompliance, setProofOfCompliance] = useState('');
   const [ownershipInformation, setOwnershipInformation] = useState('');
-  const [projectRole, setProjectRole] = useState('');
+  const [projectRole, setProjectRole] = useState('Investor');
   const [isProjectDeveloper, setIsProjectDeveloper] = useState(false);
   const [description, setDescription] = useState('');
   const [sequestration, setSequestration] = useState('');
@@ -287,12 +287,36 @@ const setCommunityMemberInterface = () => {
 
     useEffect(() => {
       console.log(loginRole);
-      if (loginRole) {
-          if (account) {
-              login();
-          }
+      if (loginRole && account) {
+          login();
       }
     }, [loginTriggered]); 
+
+    useEffect(() => {
+      console.log(loginRole);
+      if (signature != null) {
+          switch (loginRole) {
+              case 'Auditor':
+                  dispatch(auditorActions.login());
+                  navigate('/auditor/dashboard');
+                  break;
+              case 'Investor':
+                  dispatch(investorActions.login());
+                  navigate('/investor/dashboard');
+                  break;
+              case 'Project Developer':
+                  dispatch(projectDeveloperActions.login());
+                  navigate('/developer/dashboard');
+                  break;
+              case 'Community Member':
+                  dispatch(communityMemberActions.login());
+                  navigate('/dashboard');
+                  break;
+              default:
+                  break;
+          }
+      }
+    }, [signature]);
   
     async function handleLogin(event){
         event.preventDefault();
@@ -418,7 +442,7 @@ const setCommunityMemberInterface = () => {
         }}
       >
         <Typography variant="h2" color={colors.greenAccent[500]} align="center" gutterBottom>
-          {isLogin ? 'Login' : 'Sign Up'}
+          {isLogin ? 'Login As' : 'Sign Up'}
         </Typography>
         {isLogin ? (
           <form onSubmit={handleSubmit}>
@@ -448,17 +472,6 @@ const setCommunityMemberInterface = () => {
                         </Button>
                     ))
                 }
-                {/* <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    color:'white',
-                    backgroundColor: colors.redAccent[700],
-                  }}
-                >
-                  Connect Your Wallet
-                </Button> */}
               </Grid>
               <Grid item xs={12}>
                 <Button 
@@ -599,29 +612,6 @@ const setCommunityMemberInterface = () => {
                       variant="outlined"
                       label="Job Title/Role"
                       name="jobTitle"
-                      sx={{ bgcolor: 'background.paper'}}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      onChange={handleUsernameChange}
-                      fullWidth
-                      variant="outlined"
-                      label="Create a Username"
-                      name="username"
-                      sx={{ bgcolor: 'background.paper'}}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      onChange={handlePasswordChange}
-                      fullWidth
-                      variant="outlined"
-                      label="Create a Password"
-                      name="password"
-                      type="password"
                       sx={{ bgcolor: 'background.paper'}}
                     />
                   </Grid>
@@ -829,30 +819,6 @@ const setCommunityMemberInterface = () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                    
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        onChange={handleUsernameChange}
-                        fullWidth
-                        variant="outlined"
-                        label="Create a Username"
-                        name="username"
-                        sx={{ bgcolor: 'background.paper'}}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        onChange={handlePasswordChange}
-                        fullWidth
-                        variant="outlined"
-                        label="Create a Password"
-                        name="password"
-                        type="password"
-                        sx={{ bgcolor: 'background.paper'}}
-                      />
-                    </Grid>
 
                   <Grid item xs={12} sm={6} align="left">
                     <FormControlLabel
@@ -925,32 +891,6 @@ const setCommunityMemberInterface = () => {
             ) : (
                 <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth variant="outlined">
-                      <InputLabel>Investor Type</InputLabel>
-                      <Select
-                        value={investorType}
-                        onChange={handleInvestorTypeChange}
-                        label="Investor Type"
-                        sx={{ bgcolor: 'background.paper'}}
-                      >
-                        <MenuItem value="Textile">Textile</MenuItem>
-                        <MenuItem value="Chemical">Chemical</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        onChange={handleInvestorNameChange}
-                        fullWidth
-                        variant="outlined"
-                        label="Investor Name"
-                        name="investorName"
-                        sx={{ bgcolor: 'background.paper'}}
-                      />
-                    </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         required
@@ -1034,6 +974,37 @@ const setCommunityMemberInterface = () => {
                       </Select>
                     </FormControl>
                   </Grid>
+
+                  {!isProjectDeveloper && (
+                    <>
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth variant="outlined">
+                          <InputLabel>Investor Type</InputLabel>
+                          <Select
+                            value={investorType}
+                            onChange={handleInvestorTypeChange}
+                            label="Investor Type"
+                            sx={{ bgcolor: 'background.paper'}}
+                          >
+                            <MenuItem value="Textile">Textile</MenuItem>
+                            <MenuItem value="Chemical">Chemical</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                          <TextField
+                            required
+                            onChange={handleInvestorNameChange}
+                            fullWidth
+                            variant="outlined"
+                            label="Investor Name"
+                            name="investorName"
+                            sx={{ bgcolor: 'background.paper'}}
+                          />
+                      </Grid>
+                    </>                      
+                  )}
 
                     {isProjectDeveloper && (
                         <Grid item xs={12}>
@@ -1130,32 +1101,8 @@ const setCommunityMemberInterface = () => {
                             />
                         </Grid>
                     )}
-                    
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        onChange={handleUsernameChange}
-                        fullWidth
-                        variant="outlined"
-                        label="Create a Username"
-                        name="username"
-                        sx={{ bgcolor: 'background.paper'}}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        onChange={handlePasswordChange}
-                        fullWidth
-                        variant="outlined"
-                        label="Create a Password"
-                        name="password"
-                        type="password"
-                        sx={{ bgcolor: 'background.paper'}}
-                      />
-                    </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={6}>
                     <InputLabel align="left" sx={{color:colors.greenAccent[500]}}>Business Registration Documents:</InputLabel>
                     <FormControl fullWidth>      
                       <Input
