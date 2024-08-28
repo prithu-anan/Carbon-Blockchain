@@ -40,6 +40,7 @@ import DeveloperUpdates from "./scenes/developer/update/index.jsx";
 import DeveloperLiveMarket from "./scenes/developer/market/index.jsx";
 import Investors from "./scenes/developer/opportunities/index.jsx";
 import Investor from "./scenes/developer/Investor/index.jsx";
+import Start from "./scenes/login/Start.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -94,7 +95,8 @@ function App() {
           >
             {(isAuditorLoggedIn || isInvestorLoggedIn || isProjectDeveloperLoggedIn || isCommunityMemberLoggedIn) && <Topbar setIsSidebar={setIsSidebar} />}            
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<Start />} />
+              <Route path="/login" element={<Login />} />            
               {/* <Route path="/" element={<Dashboard />} /> */}
               <Route path="/team" element={<Team />} />
               <Route path="/contacts" element={<Contacts />} />

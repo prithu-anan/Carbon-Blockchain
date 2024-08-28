@@ -1,4 +1,17 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import Metamask from "../metamask";
+
+const metamask = new Metamask();
+
+const accountSlice = createSlice({
+  name: "account",
+  initialState: { account: null },
+  reducers: {
+    setAccount(state, action) {
+      state.account = action.payload;
+    },
+  },
+});
 
 const auditorSlice = createSlice({
   name: "auditor",
@@ -69,6 +82,7 @@ const sidebarSlice = createSlice({
   },
 });
 
+export const {setAccount} = accountSlice.actions;
 export const auditorActions = auditorSlice.actions;
 export const investorActions = investorSlice.actions;
 export const projectDeveloperActions = projectDeveloperSlice.actions;
@@ -77,6 +91,7 @@ export const sidebarActions = sidebarSlice.actions;
 
 export const store = configureStore({
   reducer: {
+    account: accountSlice.reducer,
     auditor: auditorSlice.reducer,
     investor: investorSlice.reducer,
     projectDeveloper: projectDeveloperSlice.reducer,

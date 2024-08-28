@@ -30,7 +30,7 @@ class Metamask {
         const signer = await provider.getSigner();
         const signature = await signer.signMessage(message) ;
   
-        console.log('Metamask says ,Signature:', signature);
+        console.log('Metamask says, Signature:', signature);
         
         return signature ;
         

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Typography, Grid, Button, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox, Input, FormLabel, Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../theme';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from '../../store';
 import Metamask from '../../metamask';
 
@@ -13,34 +13,6 @@ import Metamask from '../../metamask';
 const Login = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  const [account, setAccount] = useState(null);
-  const [signature, setSignature] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const metamask = new Metamask();
-
-  // Connect MetaMask wallet
-  async function connectWallet() {
-    setAccount(await metamask.connectWallet());
-  }
-
-  // Sign a message to log in
-  async function login() {
-    try {
-      const message = `Login request for ${account}`;
-      
-      const signature = await metamask.signMessage(message);
-
-      setSignature(signature);
-      setLoggedIn(true);
-
-      // Now you can send the signature and account to the backend for verification
-      console.log('Signature:', signature);
-    } catch (error) {
-      console.error('Login failed', error);
-    }
-  }
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -277,13 +249,60 @@ const setCommunityMemberInterface = () => {
         }
     };
 
+    // const [account, setAccount] = useState(null);
+    const account = useSelector((state) => state.account.account);
+    const [signature, setSignature] = useState(null);
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    const metamask = new Metamask();
+
+    // Connect MetaMask wallet
+    // async function connectWallet() {
+    //   setAccount(await metamask.connectWallet());
+    // }
+
+    // Sign a message to log in
+    async function login() {
+      try {
+        const message = `Login request for ${account}`;
+        
+        const signature = await metamask.signMessage(message);
+
+        setSignature(signature);
+        setLoggedIn(true);
+
+        // Now you can send the signature and account to the backend for verification
+        // console.log('Signature:', signature);
+      } catch (error) {
+        console.error('Login failed', error);
+      }
+    }
+
+    const loginRoles = ['Auditor', 'Investor', 'Project Developer', 'Community Member'];
+    const [loginRole, setLoginRole] = useState('');
     const [response, setResponse] = useState();
+
+
+    const [loginTriggered, setLoginTriggered] = useState(false);
+
+    useEffect(() => {
+      console.log(loginRole);
+      if (loginRole) {
+          if (account) {
+              login();
+          }
+      }
+    }, [loginTriggered]); 
+  
+    async function handleLogin(event){
+        event.preventDefault();
+        setLoginRole(event.target.textContent);
+        setLoginTriggered(!loginTriggered);
+    }
 
   const handleSubmit = (event) => {
     event.preventDefault(); 
-    if(isLogin && !account) {
-        connectWallet();
-    } else if(isLogin && account){
+    if(isLogin && account){
         login();
     } else if(isAuditorInterface){
         setResponse({
@@ -404,88 +423,32 @@ const setCommunityMemberInterface = () => {
         {isLogin ? (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  onChange={handleWalletIdChange}
-                  fullWidth
-                  variant="outlined"
-                  label="Wallet ID"
-                  name="email"
-                  sx={{ bgcolor: 'background.paper'}}
-                />
-              </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  onChange={handlePasswordChange}
-                  fullWidth
-                  variant="outlined"
-                  label="Password"
-                  name="password"
-                  type="password"
-                  sx={{ bgcolor: 'background.paper'}}
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>              
-                <FormControlLabel
-                  control={<Checkbox checked={isAuditorInterface}
-                   sx={{
-                    color: colors.greenAccent[500], // Change the color to red
-                    '&.Mui-checked': { // Style the checked state
-                    color: colors.greenAccent[500], // Change the color to green when checked
-                    }
-                    }}
-                    onChange={setAuditorInterface} 
-                    />}
-                  label="Auditor Login"
-                  sx={{color:colors.greenAccent[500]}}
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={isInvestorInterface && !isProjectDeveloper}
-                  sx={{
-                    color: colors.greenAccent[500], // Change the color to red
-                    '&.Mui-checked': { // Style the checked state
-                    color: colors.greenAccent[500], // Change the color to green when checked
-                    }
-                    }}
-                    onChange={()=>{setInvestorInterface();
-                                  setIsProjectDeveloper(false)}
-                              } 
-                    />}
-                  label="Investor Login"
-                  sx={{color:colors.greenAccent[500]}}
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={isInvestorInterface && isProjectDeveloper}
-                  sx={{
-                    color: colors.greenAccent[500], // Change the color to red
-                    '&.Mui-checked': { // Style the checked state
-                    color: colors.greenAccent[500], // Change the color to green when checked
-                    }
-                    }}
-                  onChange={()=>{setInvestorInterface();
-                                setIsProjectDeveloper(true)}
-                            } 
-                  />}
-                  label="Project Developer Login"
-                  sx={{color:colors.greenAccent[500]}}
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={isCommunityMemberInterface}
-                  sx={{
-                    color: colors.greenAccent[500], // Change the color to red
-                    '&.Mui-checked': { // Style the checked state
-                    color: colors.greenAccent[500], // Change the color to green when checked
-                    }
-                    }}
-                 onChange={setCommunityMemberInterface} />}
-                  label="Community Member Login"
-                  sx={{color:colors.greenAccent[500]}}
-                />
-              </Grid> */}
-              <Grid item xs={12}>
-                <Button
+                {
+                    loginRoles.map((role, index) => (
+                        <Button 
+                            key={index}
+                            // type='submit'
+                            onClick={handleLogin}
+                            fullWidth
+                            variant="contained"
+                            sx={{
+                              p: 1,
+                              mt: 1,
+                              mb: 1,
+                              color:'white',
+                              fontSize: '0.8rem',
+                              backgroundColor: colors.redAccent[500 + index * 100],
+                              ":hover": {
+                                backgroundColor: colors.blueAccent[400 + index * 100],
+                              }
+                            }}
+                        >
+                            {role}
+                        </Button>
+                    ))
+                }
+                {/* <Button
                   type="submit"
                   fullWidth
                   variant="contained"
@@ -495,7 +458,7 @@ const setCommunityMemberInterface = () => {
                   }}
                 >
                   Connect Your Wallet
-                </Button>
+                </Button> */}
               </Grid>
               <Grid item xs={12}>
                 <Button 
