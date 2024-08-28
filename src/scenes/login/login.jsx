@@ -326,7 +326,7 @@ const setCommunityMemberInterface = () => {
     } else if(isAuditorInterface){
         setResponse({
             user: 'auditor',
-            walletId: walletId,
+            walletId: account,
             role: role,
             firstName: firstName,
             lastName: lastName,
@@ -355,7 +355,7 @@ const setCommunityMemberInterface = () => {
     else if(isInvestorInterface && !isProjectDeveloper){
         setResponse({
             user: 'investor',
-            walletId: walletId,
+            walletId: account,
             investorType: investorType,
             investorName: investorName,
             address: address,
@@ -393,7 +393,7 @@ const setCommunityMemberInterface = () => {
     else if(isInvestorInterface && isProjectDeveloper){
         setResponse({
             user: 'projectDeveloper',
-            walletId: walletId,
+            walletId: account,
             address: address,
             coordinates: coordinates,
             permitsAndLicences: permitsAndLicences,
@@ -414,7 +414,7 @@ const setCommunityMemberInterface = () => {
         })
 
         const carbonOffset = new CarbonOffset();
-        const carbonRegister = await carbonOffset.registerDeveloper(response);
+        const carbonRegister = await carbonOffset.registerDeveloper();
 
         if(carbonRegister.success){
             const res = await register('developer', response);
@@ -435,7 +435,7 @@ const setCommunityMemberInterface = () => {
     else if(isCommunityMemberInterface){
         setResponse({
             user: 'communityMember',
-            walletId: walletId,
+            walletId: account,
             firstName: firstName,
             lastName: lastName,
             email: email,
