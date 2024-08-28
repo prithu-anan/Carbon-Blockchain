@@ -8,15 +8,9 @@ class CarbonOffset {
     this.contract = null;
 
     // Call the async initialization method
-    this.initialize();
   }
 
   // Non-async wrapper to call the async method
-  initialize() {
-    this.initializeContract().then(()=>console.log("contract initialized")).catch(error => {
-      console.error("Error initializing contract:", error);
-    });
-  }
 
   async initializeContract() {
     try {
