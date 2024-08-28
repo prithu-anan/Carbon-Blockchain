@@ -277,7 +277,7 @@ const setCommunityMemberInterface = () => {
 
     const loginRoles = ['Auditor', 'Investor', 'Project Developer', 'Community Member'];
     const [loginRole, setLoginRole] = useState('');
-    const [response, setResponse] = useState();
+    const [response, setResponse] = useState(null);
     const [loginTriggered, setLoginTriggered] = useState(false);
 
     useEffect(() => {
@@ -318,12 +318,14 @@ const setCommunityMemberInterface = () => {
       setLoginTriggered(!loginTriggered);
   };
 
+
   const handleSubmit = async(event) => {
-    event.preventDefault(); 
-    if(isLogin){
+    event.preventDefault();
+
+    if (isLogin) {
         setLoginRole(event.target.textContent);
         setLoginTriggered(!loginTriggered);
-    } else if(isAuditorInterface){
+    } else if (isAuditorInterface) {
         setResponse({
             user: 'auditor',
             walletId: account,
@@ -338,21 +340,8 @@ const setCommunityMemberInterface = () => {
             governmentIdentification: governmentIdentification,
             employmentVerification: employmentVerification,
             ethicsAndCodeOfConduct: ethicsAndCodeOfConduct,
-        })
-
-        const res = await register('auditor', response);
-
-        if(res.success){
-            // localStorage.setItem('auditorId', 'auditor');
-            // dispatch(auditorActions.login());
-            window.location.href = `/login`;
-        }
-
-        console.log(res.message);
-        console.log(response);
-    } 
-    
-    else if(isInvestorInterface && !isProjectDeveloper){
+        });
+    } else if (isInvestorInterface && !isProjectDeveloper) {
         setResponse({
             user: 'investor',
             walletId: account,
@@ -369,28 +358,8 @@ const setCommunityMemberInterface = () => {
             proofOfCompliance: proofOfCompliance,
             ownershipInformation: ownershipInformation,
             projectRole: projectRole,
-        })
-
-        const carbonOffset = new CarbonOffset();
-        const carbonRegister = await carbonOffset.registerInvestor(response);
-
-        if(carbonRegister.success){
-            const res = await register('investor', response);
-
-            if(res.success){
-                // localStorage.setItem('investorId', 'investor');
-                // dispatch(investorActions.login());
-                window.location.href = `/login`;
-            }
-
-            console.log(res.message);
-        }
-
-        console.log(carbonRegister.message);
-        console.log(response);            
-    } 
-    
-    else if(isInvestorInterface && isProjectDeveloper){
+        });
+    } else if (isInvestorInterface && isProjectDeveloper) {
         setResponse({
             user: 'projectDeveloper',
             walletId: account,
@@ -411,28 +380,8 @@ const setCommunityMemberInterface = () => {
             startDate: startDate,
             endDate: endDate,
             monitoring: monitoring,
-        })
-
-        const carbonOffset = new CarbonOffset();
-        const carbonRegister = await carbonOffset.registerDeveloper();
-
-        if(carbonRegister.success){
-            const res = await register('developer', response);
-
-            if(res.success){
-                // localStorage.setItem('projectDeveloperId', 'projectDeveloper');
-                // dispatch(projectDeveloperActions.login());
-                window.location.href = `/login`;
-            }
-    
-            console.log(res.message);
-        }        
-        
-        console.log(carbonRegister.message);
-        console.log(response);
-    } 
-    
-    else if(isCommunityMemberInterface){
+        });
+    } else if (isCommunityMemberInterface) {
         setResponse({
             user: 'communityMember',
             walletId: account,
@@ -444,20 +393,54 @@ const setCommunityMemberInterface = () => {
             communityAffiliation: communityAffiliation,
             interest: interest,
             communicationMethod: communicationMethod,
-        })
-        
-        const res = await register('commnunityMember', response);
-
-        if(res.success){
-            // localStorage.setItem('communityMemberId', 'communityMember');
-            // dispatch(communityMemberActions.login());
-            window.location.href = `/login`;
-        }
-
-        console.log(res.message);
-        console.log(response);
+        });
     }
   };
+
+  useEffect(() => {
+    const handleRegistration = async () => {
+        if (!response) return;
+
+        let res;
+
+        if (response?.user === 'auditor') {
+            res = await register('auditor', response);
+        } 
+        
+        else if (response?.user === 'investor') {
+            const carbonOffset = new CarbonOffset();
+            const carbonRegister = await carbonOffset.registerInvestor(response);
+            if (carbonRegister?.success) {
+                res = await register('investor', response);
+                console.log('res', res);
+            }
+            console.log(carbonRegister.message);
+        } 
+        
+        else if (response?.user === 'projectDeveloper') {
+            const carbonOffset = new CarbonOffset();
+            const carbonRegister = await carbonOffset.registerDeveloper();
+            if (carbonRegister?.success) {
+                res = await register('developer', response);
+                console.log('res', res);
+            }
+            console.log(carbonRegister.message);
+        } 
+        
+        else if (response?.user === 'communityMember') {
+            res = await register('communityMember', response);
+        }
+
+        if (res && res?.success) {
+            window.location.href = `/login`;
+        }
+        console.log(res?.message);
+        console.log(response);
+    };
+
+    handleRegistration();
+  }, [response]);
+
 
   return (
     <ThemeProvider theme={theme}>
