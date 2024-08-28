@@ -7,6 +7,8 @@ import { tokens } from '../../theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from '../../store';
 import Metamask from '../../metamask';
+import { register } from '../../api-helpers';
+import CarbonOffset from '../../carbonOffset';
 
 // const theme = createTheme();
 
@@ -256,11 +258,6 @@ const setCommunityMemberInterface = () => {
 
     const metamask = new Metamask();
 
-    // Connect MetaMask wallet
-    // async function connectWallet() {
-    //   setAccount(await metamask.connectWallet());
-    // }
-
     // Sign a message to log in
     async function login() {
       try {
@@ -281,8 +278,6 @@ const setCommunityMemberInterface = () => {
     const loginRoles = ['Auditor', 'Investor', 'Project Developer', 'Community Member'];
     const [loginRole, setLoginRole] = useState('');
     const [response, setResponse] = useState();
-
-
     const [loginTriggered, setLoginTriggered] = useState(false);
 
     useEffect(() => {
@@ -293,7 +288,6 @@ const setCommunityMemberInterface = () => {
     }, [loginTriggered]); 
 
     useEffect(() => {
-      console.log(loginRole);
       if (signature != null) {
           switch (loginRole) {
               case 'Auditor':
@@ -317,17 +311,18 @@ const setCommunityMemberInterface = () => {
           }
       }
     }, [signature]);
-  
-    async function handleLogin(event){
-        event.preventDefault();
+
+  const handleLogin = (event) => {
+      event.preventDefault();
+      setLoginRole(event.target.textContent);
+      setLoginTriggered(!loginTriggered);
+  };
+
+  const handleSubmit = async(event) => {
+    event.preventDefault(); 
+    if(isLogin){
         setLoginRole(event.target.textContent);
         setLoginTriggered(!loginTriggered);
-    }
-
-  const handleSubmit = (event) => {
-    event.preventDefault(); 
-    if(isLogin && account){
-        login();
     } else if(isAuditorInterface){
         setResponse({
             user: 'auditor',
@@ -345,11 +340,19 @@ const setCommunityMemberInterface = () => {
             ethicsAndCodeOfConduct: ethicsAndCodeOfConduct,
         })
 
+        const res = await register('auditor', response);
+
+        if(res.success){
+            // localStorage.setItem('auditorId', 'auditor');
+            // dispatch(auditorActions.login());
+            window.location.href = `/login`;
+        }
+
+        console.log(res.message);
         console.log(response);
-        localStorage.setItem('auditorId', 'auditor');
-        dispatch(auditorActions.login());  
-        // navigate('/auditor/dashboard');      
-    } else if(isInvestorInterface && !isProjectDeveloper){
+    } 
+    
+    else if(isInvestorInterface && !isProjectDeveloper){
         setResponse({
             user: 'investor',
             walletId: walletId,
@@ -367,17 +370,30 @@ const setCommunityMemberInterface = () => {
             ownershipInformation: ownershipInformation,
             projectRole: projectRole,
         })
-        
-        console.log(response);
-        localStorage.setItem('investorId', 'investor');
-        dispatch(investorActions.login());
-        // navigate('/investor/dashboard');
-    } else if(isInvestorInterface && isProjectDeveloper){
+
+        const carbonOffset = new CarbonOffset();
+        const carbonRegister = await carbonOffset.registerInvestor(response);
+
+        if(carbonRegister.success){
+            const res = await register('investor', response);
+
+            if(res.success){
+                // localStorage.setItem('investorId', 'investor');
+                // dispatch(investorActions.login());
+                window.location.href = `/login`;
+            }
+
+            console.log(res.message);
+        }
+
+        console.log(carbonRegister.message);
+        console.log(response);            
+    } 
+    
+    else if(isInvestorInterface && isProjectDeveloper){
         setResponse({
             user: 'projectDeveloper',
             walletId: walletId,
-            investorType: investorType,
-            investorName: investorName,
             address: address,
             coordinates: coordinates,
             permitsAndLicences: permitsAndLicences,
@@ -396,12 +412,27 @@ const setCommunityMemberInterface = () => {
             endDate: endDate,
             monitoring: monitoring,
         })
+
+        const carbonOffset = new CarbonOffset();
+        const carbonRegister = await carbonOffset.registerDeveloper(response);
+
+        if(carbonRegister.success){
+            const res = await register('developer', response);
+
+            if(res.success){
+                // localStorage.setItem('projectDeveloperId', 'projectDeveloper');
+                // dispatch(projectDeveloperActions.login());
+                window.location.href = `/login`;
+            }
+    
+            console.log(res.message);
+        }        
         
+        console.log(carbonRegister.message);
         console.log(response);
-        localStorage.setItem('projectDeveloperId', 'projectDeveloper');
-        dispatch(projectDeveloperActions.login());
-        // navigate('/developer/dashboard');
-    } else if(isCommunityMemberInterface){
+    } 
+    
+    else if(isCommunityMemberInterface){
         setResponse({
             user: 'communityMember',
             walletId: walletId,
@@ -415,10 +446,16 @@ const setCommunityMemberInterface = () => {
             communicationMethod: communicationMethod,
         })
         
+        const res = await register('commnunityMember', response);
+
+        if(res.success){
+            // localStorage.setItem('communityMemberId', 'communityMember');
+            // dispatch(communityMemberActions.login());
+            window.location.href = `/login`;
+        }
+
+        console.log(res.message);
         console.log(response);
-        localStorage.setItem('communityMemberId', 'communityMember');
-        dispatch(communityMemberActions.login());
-        // navigate('/dashboard')
     }
   };
 
@@ -452,8 +489,8 @@ const setCommunityMemberInterface = () => {
                     loginRoles.map((role, index) => (
                         <Button 
                             key={index}
-                            // type='submit'
-                            onClick={handleLogin}
+                            type='submit'
+                            // onClick={handleLogin}
                             fullWidth
                             variant="contained"
                             sx={{

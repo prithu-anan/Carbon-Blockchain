@@ -8,7 +8,7 @@ const accountSlice = createSlice({
   initialState: { account: null },
   reducers: {
     setAccount(state, action) {
-      state.account = action.payload;
+      state.account = action.payload;;
     },
   },
 });
@@ -82,7 +82,7 @@ const sidebarSlice = createSlice({
   },
 });
 
-export const {setAccount} = accountSlice.actions;
+export const {setAccount, connect} = accountSlice.actions;
 export const auditorActions = auditorSlice.actions;
 export const investorActions = investorSlice.actions;
 export const projectDeveloperActions = projectDeveloperSlice.actions;

@@ -4,7 +4,7 @@ import { tokens } from '../../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import Metamask from '../../metamask';
 import { useDispatch, useSelector } from 'react-redux';
-import { accountActions } from '../../store';
+import { accountActions, connect } from '../../store';
 import { connectWallet } from '../../store/connectWallet';
 
 const Start = () => {
