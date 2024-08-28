@@ -6,12 +6,41 @@ import { useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 import { useDispatch } from 'react-redux';
 import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from '../../store';
+import Metamask from '../../metamask';
 
 // const theme = createTheme();
 
 const Login = () => {
-    const theme = useTheme();
+  const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [account, setAccount] = useState(null);
+  const [signature, setSignature] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const metamask = new Metamask();
+
+  // Connect MetaMask wallet
+  async function connectWallet() {
+    setAccount(await metamask.connectWallet());
+  }
+
+  // Sign a message to log in
+  async function login() {
+    try {
+      const message = `Login request for ${account}`;
+      
+      const signature = await metamask.signMessage(message);
+
+      setSignature(signature);
+      setLoggedIn(true);
+
+      // Now you can send the signature and account to the backend for verification
+      console.log('Signature:', signature);
+    } catch (error) {
+      console.error('Login failed', error);
+    }
+  }
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -251,8 +280,12 @@ const setCommunityMemberInterface = () => {
     const [response, setResponse] = useState();
 
   const handleSubmit = (event) => {
-    event.preventDefault();    
-    if(isAuditorInterface){
+    event.preventDefault(); 
+    if(isLogin && !account) {
+        connectWallet();
+    } else if(isLogin && account){
+        login();
+    } else if(isAuditorInterface){
         setResponse({
             user: 'auditor',
             walletId: walletId,
@@ -371,7 +404,7 @@ const setCommunityMemberInterface = () => {
         {isLogin ? (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   required
                   onChange={handleWalletIdChange}
@@ -393,8 +426,8 @@ const setCommunityMemberInterface = () => {
                   type="password"
                   sx={{ bgcolor: 'background.paper'}}
                 />
-              </Grid>
-              <Grid item xs={12}>              
+              </Grid> */}
+              {/* <Grid item xs={12}>              
                 <FormControlLabel
                   control={<Checkbox checked={isAuditorInterface}
                    sx={{
@@ -450,7 +483,7 @@ const setCommunityMemberInterface = () => {
                   label="Community Member Login"
                   sx={{color:colors.greenAccent[500]}}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Button
                   type="submit"
@@ -461,7 +494,7 @@ const setCommunityMemberInterface = () => {
                     backgroundColor: colors.redAccent[700],
                   }}
                 >
-                  Login
+                  Connect Your Wallet
                 </Button>
               </Grid>
               <Grid item xs={12}>
