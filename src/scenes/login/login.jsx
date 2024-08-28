@@ -278,9 +278,9 @@ const setCommunityMemberInterface = () => {
           'Community Member': 'communityMember',
         };
         
-        const loginRole = roleMapping[role] || '';
+        const role = roleMapping[loginRole] || '';
 
-        const res = await signin({ loginRole, account, message, signature });
+        const res = await signin({ role, walletId: account, message, hash: signature });
 
         if(res?.success) {
             console.log('Login successful:', res);

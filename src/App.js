@@ -53,10 +53,10 @@ function App() {
   const isCommunityMemberLoggedIn = useSelector((state) => state.communityMember.isLoggedIn);
   const isProjectDeveloperLoggedIn = useSelector((state) => state.projectDeveloper.isLoggedIn);
   const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
-  console.log("isAuditorLoggedIn", isAuditorLoggedIn);
-  console.log("isInvestorLoggedIn", isInvestorLoggedIn);
-  console.log("isCommunityMemberLoggedIn", isCommunityMemberLoggedIn);
-  console.log("isProjectDeveloperLoggedIn", isProjectDeveloperLoggedIn);
+  // console.log("isAuditorLoggedIn", isAuditorLoggedIn);
+  // console.log("isInvestorLoggedIn", isInvestorLoggedIn);
+  // console.log("isCommunityMemberLoggedIn", isCommunityMemberLoggedIn);
+  // console.log("isProjectDeveloperLoggedIn", isProjectDeveloperLoggedIn);
   
   useEffect(() => {
     if (localStorage.getItem("auditorId")) {

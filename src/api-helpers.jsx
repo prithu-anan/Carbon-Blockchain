@@ -16,6 +16,7 @@ export const register = async(user, formData) => {
 
 export const signin = async(formData) => {
 
+    console.log("formData", formData);
     let res;
 
     try{
