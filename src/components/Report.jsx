@@ -8,6 +8,7 @@ import CardActions from '@mui/joy/CardActions';
 import Typography from '@mui/joy/Typography';
 import { useTheme } from '@mui/material';
 import { tokens } from '../theme';
+import { Link } from 'react-router-dom';
 
 export default function ReportCard() {
     const theme = useTheme();
@@ -85,8 +86,25 @@ export default function ReportCard() {
                 padding: "5px 10px",
                 m: 1
               }}
+            LinkComponent={Link}
+            to="/auditor/reports/details"
         >
             SEE DETAILS
+        </Button>
+        <Button 
+            variant="solid"
+            sx={{
+                backgroundColor: '#3F00FF',
+                color: colors.grey[100],
+                // fontSize: "14px",
+                fontWeight: "bold",
+                padding: "5px 10px",
+                m: 1
+              }}
+            LinkComponent={Link}
+            to="/auditor/reports/summary"
+        >
+            AI
         </Button>
       </CardActions>
     </Card>

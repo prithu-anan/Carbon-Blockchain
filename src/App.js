@@ -42,6 +42,8 @@ import Investors from "./scenes/developer/opportunities/index.jsx";
 import Investor from "./scenes/developer/Investor/index.jsx";
 import Start from "./scenes/login/Start.jsx";
 import CarbonOffset from "./scenes/carbonoffset/index.jsx";
+import ComplianceReport from "./scenes/auditor/reports/ComplianceReport.jsx";
+import Summary from "./scenes/auditor/reports/Summary.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -117,6 +119,9 @@ function App() {
               <Route path="/auditor/schedule" element={<Schedule />} />
               <Route path="/auditor/trails" element={<AuditTrails />} />
               <Route path="/auditor/reports" element={<Report />} />
+              <Route path="/auditor/reports/details" element={<ComplianceReport />} />
+              <Route path="/auditor/reports/summary" element={<Summary />} />
+              <Route path="auditor/carbonoffset" element={<CarbonOffset />} />
 
               <Route path="/investor/dashboard" element={<InvestorHome />} />
               <Route path="/investor/opportunities" element={<Opportunities />} />
@@ -136,7 +141,6 @@ function App() {
               <Route path="/developer/reports" element={<FinancialReport />} />
               <Route path="/developer/updates" element={<DeveloperUpdates />} />
 
-              <Route path="/carbonoffset" element={<CarbonOffset />} />
 
             </Routes>
           </main>

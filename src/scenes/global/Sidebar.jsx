@@ -25,6 +25,7 @@ import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBullet
 import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 // import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -195,6 +196,13 @@ const Sidebar = () => {
                   title="Audit Trails"
                   to="/auditor/trails"
                   icon={<FormatListBulletedOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Carbon Offset"
+                  to="/auditor/carbonoffset"
+                  icon={<CalculateOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />

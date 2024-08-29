@@ -24,6 +24,8 @@ const CarbonOffset = () => {
     const [area, setArea] = React.useState(0);
     const [efficiency, setEfficiency] = React.useState(0);
 
+    const [result, setResult] = React.useState(null);
+
     const handleTemperatureChange = (e) => {
         setTemperature(parseFloat(e.target.value));
     }
@@ -109,6 +111,7 @@ const CarbonOffset = () => {
             efficiency,
         });
         console.log(res);
+        setResult(res);
     }
 
     // React.useEffect(() => {
@@ -381,13 +384,22 @@ const CarbonOffset = () => {
                                             color:'white',
                                             backgroundColor: colors.greenAccent[700],
                                             ':hover': {
-                                                backgroundColor: colors.redAccent[900],
+                                                backgroundColor: colors.redAccent[700],
                                             }
                                         }}
                                     >
                                         Submit
                                     </Button>
                                 </Grid>
+
+                                {result && (
+                                    <Grid item xs={12}>
+                                        <Typography variant="h4" color={colors.redAccent[500]} align="center" gutterBottom>
+                                            Result: {result}
+                                        </Typography>
+                                    </Grid>
+                                )}
+
                             </Grid>
                         </form>
                     </div>
