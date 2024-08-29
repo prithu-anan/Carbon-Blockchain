@@ -30,3 +30,6 @@ smart-contracts/.env
 # backend node-modules
 
 backend/node_modules/
+
+# ai
+.venv
