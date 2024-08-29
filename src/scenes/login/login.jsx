@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 import { useDispatch, useSelector } from 'react-redux';
-import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions } from '../../store';
+import { auditorActions, communityMemberActions, investorActions, projectDeveloperActions, setAccount } from '../../store';
 import Metamask from '../../metamask';
 import { register, signin } from '../../api-helpers';
 import CarbonOffset from '../../carbonOffset';
+import { connectWallet } from '../../store/connectWallet';
 
 // const theme = createTheme();
 
@@ -284,7 +285,7 @@ const setCommunityMemberInterface = () => {
 
         if(res?.success) {
             console.log('Login successful:', res);
-            switch(role) {
+            switch(loginRole) {
               case 'Auditor':
                 // localStorage.setItem('auditorId', res?.data.id);
                 dispatch(auditorActions.login());
@@ -472,7 +473,7 @@ const setCommunityMemberInterface = () => {
         }
 
         if (res && res?.success) {
-            window.location.href = `/login`;
+            window.location.href = `/`;
         }
         console.log(res?.message);
         console.log(response);
