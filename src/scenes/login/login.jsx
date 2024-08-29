@@ -310,6 +310,27 @@ const setCommunityMemberInterface = () => {
         
       } catch (error) {
         console.error('Login failed', error);
+        switch(loginRole) {
+          case 'Auditor':
+            // localStorage.setItem('auditorId', res?.data.id);
+            dispatch(auditorActions.login());
+            navigate('/auditor/dashboard');
+            break;
+          case 'Investor':
+            dispatch(investorActions.login());
+            navigate('/investor/dashboard');
+            break;
+          case 'Project Developer':
+            dispatch(projectDeveloperActions.login());
+            navigate('/developer/dashboard');
+            break;
+          case 'Community Member':
+            dispatch(communityMemberActions.login());
+            navigate('/dashboard');
+            break;
+          default:
+            break;
+        }
       }
     }
 
@@ -472,7 +493,7 @@ const setCommunityMemberInterface = () => {
             res = await register('communityMember', response);
         }
 
-        if (res && res?.success) {
+        if (res?.success) {
             window.location.href = `/`;
         }
         console.log(res?.message);
