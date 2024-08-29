@@ -43,6 +43,8 @@ export const getSummary = async() => {
 }
 
 export const getCarbonOffsetCount = async(formData) => {
+
+    console.log("formData", formData);
         
     let res;
 
@@ -52,6 +54,6 @@ export const getCarbonOffsetCount = async(formData) => {
         console.log(err);
     }
 
-    console.log(res.data);
-    return res.data;
+    console.log(res?.data);
+    return res?.data;
 }

@@ -1,11 +1,15 @@
 from flask import Flask, request, jsonify
 import google.generativeai as genai
 from carbonoffsetcount import PredictionModel
+from flask_cors import CORS
 
 # Configure the Google Generative AI API
 genai.configure(api_key="AIzaSyD4L8M4UWOadPU13eJ6nhaY7hDhvnBFWaw")
 
+
+
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 @app.route('/predict', methods=['POST'])
 

@@ -11,7 +11,7 @@ const CarbonOffset = () => {
     const [pressure, setPressure] = React.useState(0);
     const [humidity, setHumidity] = React.useState(0);
     const [speed, setSpeed] = React.useState(0);
-    const [windDirection, setWindDirection] = React.useState(0);
+    const [wind_direction, setWindDirection] = React.useState(0);
     const [month, setMonth] = React.useState(0);
     const [day, setDay] = React.useState(0);
     const [hour, setHour] = React.useState(0);
@@ -45,39 +45,39 @@ const CarbonOffset = () => {
     }
 
     const handleMonthChange = (e) => {
-        setMonth(e.target.value);
+        setMonth(parseInt(e.target.value));
     }
 
     const handleDayChange = (e) => {
-        setDay(e.target.value);
+        setDay(parseInt(e.target.value));
     }
 
     const handleHourChange = (e) => {
-        setHour(e.target.value);
+        setHour(parseInt(e.target.value));
     }
 
     const handleMinuteChange = (e) => {
-        setMinute(e.target.value);
+        setMinute(parseInt(e.target.value));
     }
 
     const handleSecondChange = (e) => {
-        setSecond(e.target.value);
+        setSecond(parseInt(e.target.value));
     }
 
     const handleRiseHourChange = (e) => {
-        setRiseHour(e.target.value);
+        setRiseHour(parseInt(e.target.value));
     }
 
     const handleRiseMinuteChange = (e) => {
-        setRiseMinute(e.target.value);
+        setRiseMinute(parseInt(e.target.value));
     }
 
     const handleSetHourChange = (e) => {
-        setSetHour(e.target.value);
+        setSetHour(parseInt(e.target.value));
     }
 
     const handleSetMinuteChange = (e) => {
-        setSetMinute(e.target.value);
+        setSetMinute(parseInt(e.target.value));
     }
 
     const handleAreaChange = (e) => {
@@ -95,7 +95,7 @@ const CarbonOffset = () => {
             pressure,
             humidity,
             speed,
-            windDirection,
+            wind_direction,
             month,
             day,
             hour,
