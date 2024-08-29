@@ -23,6 +23,10 @@ app.use('/developer',developerRouter);
 app.use('/investor',investorRouter) ;
 app.use('/auth',authRouter);
 
+app.use('/',(req,res)=>{
+  return res.json("Welcome to Greenblox!") ;
+})
+
 // Import Routes
 // For example: const userRoutes = require('./routes/userRoutes');
 // app.use('/api/users', userRoutes);

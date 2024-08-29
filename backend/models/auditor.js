@@ -31,7 +31,7 @@ const auditorSchema = new mongoose.Schema({
 
     phoneNumber : {
         type: String
-    }
+    }, 
 
 });
 
