@@ -41,6 +41,7 @@ import DeveloperLiveMarket from "./scenes/developer/market/index.jsx";
 import Investors from "./scenes/developer/opportunities/index.jsx";
 import Investor from "./scenes/developer/Investor/index.jsx";
 import Start from "./scenes/login/Start.jsx";
+import CarbonOffset from "./scenes/carbonoffset/index.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -134,6 +135,8 @@ function App() {
               <Route path="/developer/market" element={<DeveloperLiveMarket />} />
               <Route path="/developer/reports" element={<FinancialReport />} />
               <Route path="/developer/updates" element={<DeveloperUpdates />} />
+
+              <Route path="/carbonoffset" element={<CarbonOffset />} />
 
             </Routes>
           </main>

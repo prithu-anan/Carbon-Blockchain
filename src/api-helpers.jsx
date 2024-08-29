@@ -27,3 +27,31 @@ export const signin = async(formData) => {
 
     return res.data;
 };
+
+export const getSummary = async() => {
+    
+    let res;
+
+    try{
+        res = await axios.get(`http://127.0.0.1:8000/summary`);
+    }catch(err){
+        console.log(err);
+    }
+
+    console.log(res.data);
+    return res.data;
+}
+
+export const getCarbonOffsetCount = async(formData) => {
+        
+    let res;
+
+    try{
+        res = await axios.post(`http://127.0.0.1:8000/predict`, formData);
+    } catch(err){
+        console.log(err);
+    }
+
+    console.log(res.data);
+    return res.data;
+}

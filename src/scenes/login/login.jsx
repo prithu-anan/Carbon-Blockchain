@@ -313,7 +313,7 @@ const setCommunityMemberInterface = () => {
       }
     }
 
-    const loginRoles = ['Auditor', 'Investor', 'Project Developer', 'Community Member'];
+    const loginRoles = ['Auditor', 'Investor', 'Project Developer'];
     const [loginRole, setLoginRole] = useState('');
     const [response, setResponse] = useState(null);
     const [loginTriggered, setLoginTriggered] = useState(false);
@@ -576,7 +576,7 @@ const setCommunityMemberInterface = () => {
                     }
                     }}
                 />}
-              label="Investor Registration"
+              label="Investor/Developer Registration"
               sx={{color:colors.greenAccent[500]}}
             />
             <FormControlLabel
