@@ -74,11 +74,15 @@ class PredictionModel:
         self.xtrain = self.scaler.fit_transform(self.xtrain)
         self.xtest = self.scaler.transform(self.xtest)
 
-    def predict(self):
+    def predict(self,input_data=None):
         # Train model and make predictions
         params = {'learning_rate': 0.1, 'max_depth': 8}
         self.model = XGBRegressor(**params)
         self.model.fit(self.xtrain, self.ytrain)
+        if input_data is None:
+            y_pred = self.model.predict(self.xtest)
+        else:
+            y_pred = self.model.predict(input_data)
 
         print(f"xtest: \n {self.xtest}")
 
@@ -103,20 +107,39 @@ class PredictionModel:
         co2_reduction_tonnes = co2_reduction_kg / 1000
 
         return co2_reduction_tonnes
+    def predict_external_input(self, temperature, pressure, humidity, speed, wind_direction, month, day, hour, minute, second, risehour, riseminute, sethour, setminute):
+        # Prepare the input data in the correct format
+        external_input = pd.DataFrame({
+            'Temperature': [(temperature + 1)],
+            'Pressure': [pressure],
+            'Humidity': [humidity],
+            'Speed': [(speed + 1)],
+            'WindDirection(Degrees)': [wind_direction],
+            'Month': [month],
+            'Day': [day],
+            'Hour': [hour],
+            'Minute': [minute],
+            'Second': [second],
+            'risehour': [risehour],
+            'riseminuter': [riseminute],
+            'sethour': [sethour],
+            'setminute': [setminute]
+        })
 
+        # Apply the transformations
+        external_input['Temperature'] = np.log(external_input['Temperature'])
+        external_input['Pressure'] = np.log(external_input['Pressure'] + 1)  # Use log instead of Box-Cox
+        external_input['Humidity'] = np.log(external_input['Humidity'] + 1)  # Use log instead of Box-Cox
+        external_input['Speed'] = np.log(external_input['Speed'])
+        external_input['WindDirection(Degrees)'] = MinMaxScaler().fit_transform(
+            np.array(external_input['WindDirection(Degrees)']).reshape(-1, 1)
+        )
+        # Ensure the column order matches the original training data
+        external_input = external_input[self.input_features.columns]
 
-# Example usage
-model = PredictionModel()
+        # Scale the input
+        external_input_scaled = self.scaler.transform(external_input)
 
-# Initialize (data scraping, feature selection, etc.)
-model.initialize()
-
-# Predict irradiance
-print(f"model prediction:\n{model.predict()}")
-
-# Calculate CO2 reduction
-area = 1000  # in square meters (m²)
-irradiance = 800  # in watts per square meter (W/m²)
-efficiency = 0.18  # efficiency (18%)
-co2_reduction = model.calculate(area, irradiance, efficiency)
-print(f"CO2 reduction: {co2_reduction:.2f} tonnes")
+        # Predict Radiation
+        predicted_radiation = self.predict(input_data=external_input_scaled)
+        return predicted_radiation[0]
